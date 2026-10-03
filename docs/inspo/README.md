@@ -4,4 +4,4 @@ Owner-supplied visual references reviewed on 2026-10-03. Original filenames and 
 
 DIY zine composition, colored paper, collage, photocopy textures, hand lettering, and folding diagrams.
 
-The [three catalog studies](../design/catalog-previews.md) interpret these references with original HTML/CSS artwork.
+The owner selected **A — Cut & Paste**. See the [selected catalog design](../design/catalog-previews.md) for implementation and content boundaries.

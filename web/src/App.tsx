@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from "react";
+import Catalog from "./Catalog";
 const publicURL = import.meta.env.VITE_PUBLIC_URL || globalThis.location?.origin || "http://localhost";
 const contact = import.meta.env.VITE_CORRECTION_CONTACT || "info@subcult.tv";
 const Reader = lazy(() => import("./Reader"));
@@ -26,13 +27,13 @@ export interface DocumentRecord {
   variants: Variant[];
   hits: { page: number; variant: string; snippet: string }[];
 }
-interface Collection {
+export interface Collection {
   id: string;
   name: string;
   introduction: string;
   accent: string;
 }
-interface Listing {
+export interface Listing {
   documents: DocumentRecord[];
   total: number;
   limit: number;
@@ -255,105 +256,7 @@ export default function App() {
               </details>
             </section>
           ) : (
-            <section className="catalog">
-              <p className="eyebrow">
-                {collectionID.startsWith("fixture-")
-                  ? "Synthetic verification collection"
-                  : "Preserved collection"}
-              </p>
-              <h1>{collection?.name || "Collection unavailable"}</h1>
-              <p className="description">{collection?.introduction}</p>
-              <form method="get" action="/" className="search">
-                <input type="hidden" name="collection" value={collectionID} />
-                <label>
-                  Search titles and available text
-                  <input
-                    name="q"
-                    type="search"
-                    defaultValue={params.get("q") || ""}
-                    maxLength={200}
-                  />
-                </label>
-                <label>
-                  Subject
-                  <select
-                    name="subject"
-                    defaultValue={params.get("subject") || ""}
-                  >
-                    <option value="">All subjects</option>
-                    {subjects.map((s) => (
-                      <option key={s}>{s}</option>
-                    ))}
-                  </select>
-                </label>
-                <button type="submit">Search</button>
-              </form>
-              <p role="status">
-                {listing?.total || 0} documents
-                {params.get("q") ? ` matching “${params.get("q")}”` : ""}
-              </p>
-              {listing?.documents.length === 0 && (
-                <p className="notice">
-                  No documents match these filters.{" "}
-                  <a href={`/?collection=${collectionID}`}>Clear filters</a>
-                </p>
-              )}
-              <div className="document-list">
-                {listing?.documents.map((d) => (
-                  <article key={d.id}>
-                    {d.variants[0] && (
-                      <img
-                        src={`/api/assets/${d.variants[0].id}/cover`}
-                        alt=""
-                        loading="lazy"
-                        onError={(e) => {
-                          e.currentTarget.hidden = true;
-                        }}
-                      />
-                    )}
-                    <div>
-                      <h2>
-                        <a href={`/documents/${d.id}`}>{d.metadata.title}</a>
-                      </h2>
-                      <p>
-                        {d.metadata.creator || "Creator unknown"} ·{" "}
-                        {d.metadata.date || "Date unknown"}
-                      </p>
-                      <p>{d.metadata.subjects?.join(" · ")}</p>
-                      <p className="rights-label">Rights: {d.rights === "unknown" ? "Unknown" : d.rights} · No reuse license asserted</p>
-                      {d.hits.map((h, i) => (
-                        <p className="search-hit" key={i}>
-                          <a
-                            href={`/documents/${d.id}?read=1&variant=${h.variant}${h.page > 0 ? `&page=${h.page}` : ""}`}
-                          >
-                            {h.page > 0 ? `Page ${h.page}` : "Document text"}
-                          </a>
-                          : {h.snippet}
-                        </p>
-                      ))}
-                    </div>
-                  </article>
-                ))}
-              </div>
-              {listing && (
-                <nav className="pagination" aria-label="Catalog pages">
-                  {listing.offset > 0 && (
-                    <a
-                      href={offsetLink(
-                        Math.max(0, listing.offset - listing.limit),
-                      )}
-                    >
-                      Previous
-                    </a>
-                  )}
-                  {listing.offset + listing.limit < listing.total && (
-                    <a href={offsetLink(listing.offset + listing.limit)}>
-                      Next
-                    </a>
-                  )}
-                </nav>
-              )}
-            </section>
+            <Catalog collection={collection} collectionID={collectionID} listing={listing} subjects={subjects} params={params} offsetLink={offsetLink} />
           )}
         </>
       )}

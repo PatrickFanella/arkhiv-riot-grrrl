@@ -1,32 +1,23 @@
-# Riot Grrrl catalog design previews
+# Catalog design: Cut & Paste
 
-Three temporary studies compare catalog layouts using the owner's October 3 inspiration files in [docs/inspo](../inspo/). Selection is pending. These studies are available only in Vite development mode; production builds exclude the prototype component and its styles.
+The owner selected A, **Cut & Paste**, on October 3, 2026. Colored stock, cutout letters, taped scanned covers, pasted captions and typewriter typography. The selected layout now uses the catalog API. The comparison switcher, six sample records, sample cover artwork and unused B/C layouts have been removed.
 
-| Variant | Direction | Composition |
-| --- | --- | --- |
-| A | Cut & Paste | Colored paper, torn edges, mismatched cutout lettering, tape, and layered publication covers. |
-| B | Copy Shop | A stark photocopy poster, reversed black lettering, halftones, and dense paste-up selections. |
-| C | Bedroom Press | A personal notebook with colored stock, marginal notes, and an informal zine shelf. |
+## Content and interaction
 
-## Open the previews
+The opening feature uses the first returned document on the unfiltered first page. It is a browsing entry, not an editorial ranking. The contents column links to the next three returned records. Search and subsequent pages omit this opening feature and display the actual results, including page-text links. Collection selection, query, subject and pagination remain URL state handled by the server.
 
-From this repository root, run:
+Cover images come from the existing local cover endpoint. Missing images show a clearly labeled title fallback. The layouts introduce no fabricated issue numbers, publication dates, scan artwork or creator information. Document pages retain the local PDF reader, download links, text-coverage labels, original source links, access statements, hashes and correction/removal contact.
 
-```sh
-pnpm --dir web install --frozen-lockfile
-pnpm --dir web dev --host 127.0.0.1 --port 54432
-```
+At narrow widths the feature stacks, the cover catalog reduces to two columns, and forms remain labeled. The reader controls retain their existing responsive behavior. Small publication rotations are removed on narrow screens.
 
-Open `http://127.0.0.1:54432/?design=A`; substitute B or C for the other studies. The bottom selector and left/right arrow keys cycle designs. Text fields retain normal keyboard behavior. Search and publication/subject filters operate on six sample selections. Selecting a publication opens a native modal with sample metadata and a source link; Escape closes it.
+## Preview
 
-For review from another homelab device, bind Vite to Kvant's private interface with `--host 10.0.0.50`. This frontend-only process uses no database or preserved document storage. The normal isolated launcher remains the default for application development; these studies can run independently when its two application slots are occupied.
+Use the isolated Arkhiv launcher from this exact checkout for synthetic application development. For a frontend review against an already qualified API, set `ARKHIV_DEV_API` when starting Vite; it defaults to `http://127.0.0.1:8080`. This option changes only the development proxy. Production keeps its existing API route and access policy.
 
-## Content and evidence boundaries
+The retained private review URL is `http://10.0.0.50:54432/`. It proxies the private Riot Grrrl runtime through an owned loopback SSH tunnel; the archive remains private. No `design` parameter is needed.
 
-Titles and creators come from the qualified pilot. Cover compositions are original typeset study artwork, not original scans. Anarchist numbered labels are design ordering, not historical issue numbers. Riot Grrrl VOOP dates show the pilot's 1992–1993 range, not verified dates for each edition. The samples do not demonstrate PDF reading, preservation, or live acquisition. No new rights or public-access decision is implied.
+Owner-supplied references remain in [docs/inspo](../inspo/). Their original bytes are tracked as research material. Source URLs and reuse licenses were not supplied. Reference images are not bundled into the application.
 
-Reference images stay under docs/inspo and are not bundled into the previews. Their source URLs and licenses were not supplied. Treat them as research references; the production identity requires its own assets.
+## Release boundary
 
-## After selection
-
-Record the selected layout and the elements to retain, implement them against the existing catalog API and reader, then remove DesignPrototype.tsx, design-prototype.css, and the development entry gate. Keep the existing attribution, rights, source history, and access controls intact. Verify desktop and narrow layouts, keyboard controls, search, and the reader before rollout.
+This change prepares the selected interface for review. Verification and hosted CI are recorded in the PR. Deployment is a separate action; passing frontend checks does not establish production rollout. Existing preservation storage, publication approvals and update jobs are unchanged.
