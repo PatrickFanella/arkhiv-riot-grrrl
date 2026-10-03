@@ -55,3 +55,7 @@ release needs a reviewed variant manifest, owner access decision and selected do
 ## Catalog design follow-up
 
 The owner selected **A — Cut & Paste** on October 3. The [selected interface](../design/catalog-previews.md) uses actual catalog metadata and local cover scans. Search, pagination, document reading, downloads, provenance and rights/contact remain available. Comparison prototypes and unused layouts are removed. Required repository verification and desktop/narrow browser checks qualify the implementation; deployment remains separate.
+
+## Collection expansion
+
+The owner requested a broader collection. [The bounded expansion plan](0004-riot-grrrl-expansion.md) adds sixteen reviewed source identities to the private pilot; qualification will record the resulting catalog and backup.
