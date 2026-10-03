@@ -24,5 +24,9 @@
     "backup": "daily 03:00 America/Chicago",
     "retention": "daily 03:40 America/Chicago",
     "monitor": "every 15 minutes"
-  }
+  },
+  "compose_project": "riot-grrrl-pilot",
+  "collections": [
+    "/app/collections/riot-grrrl.yaml"
+  ]
 }

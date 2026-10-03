@@ -60,8 +60,8 @@ class RestoreSafetyTest(unittest.TestCase):
             cleanup = calls[-1]
             self.assertEqual(cleanup[-2:], ['down', '--volumes'])
             project = cleanup[cleanup.index('--project-name') + 1]
-            self.assertTrue(project.startswith('arkhiv-drill-'))
-            self.assertNotEqual(project, 'arkhiv-pilot')
+            self.assertTrue(project.startswith('riot-grrrl-drill-'))
+            self.assertNotEqual(project, 'riot-grrrl-pilot')
             compose_path = Path(cleanup[cleanup.index('-f') + 1])
             composed = json.loads(compose_path.read_text())
             self.assertTrue(composed['networks']['default']['internal'])

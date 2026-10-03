@@ -30,6 +30,13 @@ class OperationsTest(unittest.TestCase):
     def config(self):
         return {k: str(self.root) for k in ('project', 'archive', 'staging', 'state', 'backup_root')} | {'backup_host': 'nuc', 'minimum_free_bytes': 1, 'revision': 'test'}
 
+    def test_cli_isolated_from_original_arkhiv_project(self):
+        calls = []
+        r = runner.Runner(self.config(), execute=lambda args: calls.append(args) or '{}')
+        r.cli('audit')
+        self.assertEqual(calls[0][calls[0].index('--project-name') + 1], 'riot-grrrl-pilot')
+        self.assertNotIn('arkhiv-pilot', calls[0])
+
     def test_verified_complete_backup_and_corruption(self):
         p = self.root / 'backup'
         fixture(p)
