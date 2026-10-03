@@ -1,14 +1,14 @@
 {
   "id": "riot-grrrl",
   "name": "Riot Grrrl Zine Archive",
-  "introduction": "Girl Germs, VOOP and Drop Babies: seven zines from 1991\u20131993, preserving feminist punk writing across US and UK scenes. Original scans, source history and rights uncertainty stay with each record.",
+  "introduction": "Girl Germs, VOOP, Violet, No Apologies, Personality Liberation Front and related feminist punk zines. Original scans, available text, source history and rights uncertainty stay with each record.",
   "accent": "#9b1459",
   "item": "",
   "discovery": {
-    "query": "identifier:(girl-germs-3 OR girl-germs-4 OR voop-issue-1-uk-riot-grrl-zine OR voop-issue-2-uk-riot-grrl-zine OR voop-issue-3-uk-riot-grrl-zine OR voop-issue-5-uk-riot-grrl-zine OR drop-babies-zine-issue-1-uk-riot-grrrl)",
-    "max_items": 10,
-    "page_size": 10,
-    "max_requests": 24
+    "query": "identifier:(girl-germs-3 OR girl-germs-4 OR voop-issue-1-uk-riot-grrl-zine OR voop-issue-2-uk-riot-grrl-zine OR voop-issue-3-uk-riot-grrl-zine OR voop-issue-5-uk-riot-grrl-zine OR drop-babies-zine-issue-1-uk-riot-grrrl OR violet-zine-vol-1 OR violet-zine-volume-2 OR violet-zine-volume-3 OR violet-zine-volume-4 OR violet-zine-volume-5 OR no-apologies-1998_202508 OR no-apologies-2-1999_202508 OR no-apologies-3 OR personality-liberation-front-1-1997 OR personallity-liberation-front-2 OR personality-liberation-front-3 OR personality-liberation-front-4-2003 OR persenones OR girl-cola-4 OR veneer-4 OR glorianne-a-girls-guide-to-getting-involved)",
+    "max_items": 30,
+    "page_size": 30,
+    "max_requests": 64
   },
   "updates": {
     "enabled": true,
@@ -17,9 +17,9 @@
     "minimum_free_bytes": 2147483648
   },
   "limits": {
-    "documents": 10,
-    "total_bytes": 402653184,
-    "file_bytes": 104857600,
+    "documents": 30,
+    "total_bytes": 2147483648,
+    "file_bytes": 262144000,
     "concurrency": 2
   },
   "selection": [
@@ -139,6 +139,262 @@
         "feminism",
         "music",
         "UK"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "violet-zine-vol-1",
+      "file": "Violet_zine_vol_1.pdf",
+      "key": "violet-zine-vol-1",
+      "title": "Violet Zine Vol 1",
+      "creator": "Lucy McKenzie",
+      "date": "1992-12-12",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "violet-zine-volume-2",
+      "file": "Violet_Zine_Volume_2_.pdf",
+      "key": "violet-zine-volume-2",
+      "title": "Violet Zine Volume 2",
+      "creator": "Lucy McKenzie",
+      "date": "unknown",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "violet-zine-volume-3",
+      "file": "Violet_Zine_Volume_3_.pdf",
+      "key": "violet-zine-volume-3",
+      "title": "Violet Zine Volume 3",
+      "creator": "Lucy McKenzie",
+      "date": "1994",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "violet-zine-volume-4",
+      "file": "Violet_Zine_Volume_4_.pdf",
+      "key": "violet-zine-volume-4",
+      "title": "Violet Zine Volume 4",
+      "creator": "Lucy Mckenzie",
+      "date": "1994",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "violet-zine-volume-5",
+      "file": "Violet_Zine_Volume_5_.pdf",
+      "key": "violet-zine-volume-5",
+      "title": "Violet Zine Volume 5",
+      "creator": "Lucy McKenzie",
+      "date": "1995",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "no-apologies-1998_202508",
+      "file": "No Apologies - 1998.pdf",
+      "key": "no-apologies-1998_202508",
+      "title": "No Apologies #1 (1998)",
+      "creator": "Kirsty",
+      "date": "1998",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "no-apologies-2-1999_202508",
+      "file": "No Apologies 2  1999.pdf",
+      "key": "no-apologies-2-1999_202508",
+      "title": "No Apologies #2 (1999)",
+      "creator": "Kirsty",
+      "date": "1999-02",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "no-apologies-3",
+      "file": "no apologies 3.pdf",
+      "key": "no-apologies-3",
+      "title": "No Apologies #3 (1999)",
+      "creator": "Kirsty",
+      "date": "1999-10",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "personality-liberation-front-1-1997",
+      "file": "Personality LIberation Front 1 1997.pdf",
+      "key": "personality-liberation-front-1-1997",
+      "title": "Personality LIberation Front #1 (1997)",
+      "creator": "Kylie & Kath",
+      "date": "1997",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "personallity-liberation-front-2",
+      "file": "Personallity Liberation Front 2.pdf",
+      "key": "personallity-liberation-front-2",
+      "title": "Personality Liberation Front #2 (1999)",
+      "creator": "Kylie & Kath",
+      "date": "1999",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "personality-liberation-front-3",
+      "file": "Personality Liberation Front 3.pdf",
+      "key": "personality-liberation-front-3",
+      "title": "Personality Liberation Front #3 (2001)",
+      "creator": "Kylie Lewis",
+      "date": "2001",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "personality-liberation-front-4-2003",
+      "file": "Personality Liberation Front 4 - 2003.pdf",
+      "key": "personality-liberation-front-4-2003",
+      "title": "Personality Liberation Front #4 (2003)",
+      "creator": "",
+      "date": "unknown",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "persenones",
+      "file": "persenones (1).pdf",
+      "key": "persenones",
+      "title": "Persephone's Network",
+      "creator": "Jen Angel, Cleveland Riot Girl",
+      "date": "1993-04-23",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "girl-cola-4",
+      "file": "Girl Cola #4.pdf",
+      "key": "girl-cola-4",
+      "title": "Girl Cola # 4",
+      "creator": "",
+      "date": "1992-12",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "veneer-4",
+      "file": "Veneer #4.pdf",
+      "key": "veneer-4",
+      "title": "Veneer #4 Zine",
+      "creator": "Talula and Forsythia",
+      "date": "1995",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "glorianne-a-girls-guide-to-getting-involved",
+      "file": "Glorianne - A Girl's Guide to Getting Involved.pdf",
+      "key": "glorianne-a-girls-guide-to-getting-involved",
+      "title": "Glorianne: A Girl's Guide To Getting Involved",
+      "creator": "",
+      "date": "unknown",
+      "language": "",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music"
       ],
       "rights": "unknown"
     }
