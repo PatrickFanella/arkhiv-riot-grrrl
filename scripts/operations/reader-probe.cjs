@@ -42,8 +42,10 @@ async function main() {
     const renderedCollections = new Set();
     for (const document of documents) {
       for (const variant of document.variants) {
-        const data = await (await get('/api/assets/' + variant.id + '?download=1')).body();
+        const response = await get('/api/assets/' + variant.id + '?download=1');
+        const data = await response.body();
         if (data.length !== variant.size || createHash('sha256').update(data).digest('hex') !== variant.sha256) throw new Error('download integrity mismatch');
+        await response.dispose();
         downloads++;
         await page.goto(origin + '/documents/' + document.id + '?read=1&variant=' + variant.id + '&page=1');
         await page.waitForFunction(() => {
