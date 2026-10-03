@@ -8,10 +8,10 @@ test("catalog, page search, local PDF rendering, navigation and download", async
   request,
 }) => {
   await page.goto("/?collection=fixture-zines");
-  await expect(page.getByRole("link", { name: "Arkhiv home" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Riot Grrrl Archive home" })).toBeVisible();
   await page.keyboard.press("Tab");
-  await expect(page.getByRole("link", { name: "Arkhiv home" })).toBeFocused();
-  expect(await page.getByRole("link", { name: "Arkhiv home" }).evaluate((e) => {
+  await expect(page.getByRole("link", { name: "Riot Grrrl Archive home" })).toBeFocused();
+  expect(await page.getByRole("link", { name: "Riot Grrrl Archive home" }).evaluate((e) => {
     const style = getComputedStyle(e);
     return style.outlineStyle !== "none" && parseFloat(style.outlineWidth) >= 2;
   })).toBeTruthy();

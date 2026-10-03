@@ -1,7 +1,7 @@
 package updates
 
 import (
-	ia "git.subcult.tv/subculture-collective/arkhiv/internal/source/internetarchive"
+	ia "git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/source/internetarchive"
 	"testing"
 )
 

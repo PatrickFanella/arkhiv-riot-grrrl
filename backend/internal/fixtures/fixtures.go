@@ -8,10 +8,10 @@ import (
 	"os"
 	"strings"
 
-	"git.subcult.tv/subculture-collective/arkhiv/internal/catalog"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/config"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/index"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/storage"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/catalog"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/config"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/index"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/storage"
 )
 
 func PDF(pages ...string) []byte {

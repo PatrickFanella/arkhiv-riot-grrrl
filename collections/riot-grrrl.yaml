@@ -1,0 +1,146 @@
+{
+  "id": "riot-grrrl",
+  "name": "Riot Grrrl Zine Archive",
+  "introduction": "Girl Germs, VOOP and Drop Babies: seven zines from 1991\u20131993, preserving feminist punk writing across US and UK scenes. Original scans, source history and rights uncertainty stay with each record.",
+  "accent": "#9b1459",
+  "item": "",
+  "discovery": {
+    "query": "identifier:(girl-germs-3 OR girl-germs-4 OR voop-issue-1-uk-riot-grrl-zine OR voop-issue-2-uk-riot-grrl-zine OR voop-issue-3-uk-riot-grrl-zine OR voop-issue-5-uk-riot-grrl-zine OR drop-babies-zine-issue-1-uk-riot-grrrl)",
+    "max_items": 10,
+    "page_size": 10,
+    "max_requests": 24
+  },
+  "updates": {
+    "enabled": true,
+    "policy": "review",
+    "cadence_hours": 168,
+    "minimum_free_bytes": 2147483648
+  },
+  "limits": {
+    "documents": 10,
+    "total_bytes": 402653184,
+    "file_bytes": 104857600,
+    "concurrency": 2
+  },
+  "selection": [
+    {
+      "item": "girl-germs-3",
+      "file": "Girl Germs 3.pdf",
+      "key": "girl-germs-3",
+      "title": "Girl Germs 3",
+      "creator": "Allison Wolfe, Molly Neuman",
+      "date": "1991",
+      "language": "eng",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music",
+        "US"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "girl-germs-4",
+      "file": "Girl Germs 4.pdf",
+      "key": "girl-germs-4",
+      "title": "Girl Germs 4",
+      "creator": "Allison Wolfe, Molly Neuman",
+      "date": "1991",
+      "language": "eng",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music",
+        "US"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "voop-issue-1-uk-riot-grrl-zine",
+      "file": "VOOP issue 1 - UK Riot Grrl zine.pdf",
+      "key": "voop-issue-1-uk-riot-grrl-zine",
+      "title": "VOOP Issue 1",
+      "creator": "Greta Drummond-Gillett, Layla Gibbon",
+      "date": "1992",
+      "language": "eng",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music",
+        "UK"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "voop-issue-2-uk-riot-grrl-zine",
+      "file": "VOOP issue 2 - UK Riot Grrl zine.pdf",
+      "key": "voop-issue-2-uk-riot-grrl-zine",
+      "title": "VOOP Issue 2 UK Riot Grrl Zine",
+      "creator": "Greta Drummond-Gillett, Layla Gibbon",
+      "date": "1993",
+      "language": "english-handwritten",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music",
+        "UK"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "voop-issue-3-uk-riot-grrl-zine",
+      "file": "VOOP issue 3 - UK Riot Grrl zine.pdf",
+      "key": "voop-issue-3-uk-riot-grrl-zine",
+      "title": "VOOP Issue 3 UK Riot Grrl Zine",
+      "creator": "Greta Drummond-Gillett, Layla Gibbon",
+      "date": "1993",
+      "language": "english-handwritten",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music",
+        "UK"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "voop-issue-5-uk-riot-grrl-zine",
+      "file": "VOOP issue 5 - UK Riot Grrl zine.pdf",
+      "key": "voop-issue-5-uk-riot-grrl-zine",
+      "title": "VOOP Issue 5 UK Riot Grrl Zine",
+      "creator": "Greta Drummond-Gillett, Layla Gibbon",
+      "date": "1993",
+      "language": "eng",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music",
+        "UK"
+      ],
+      "rights": "unknown"
+    },
+    {
+      "item": "drop-babies-zine-issue-1-uk-riot-grrrl",
+      "file": "Drop Babies zine issue 1 - UK Riot Grrrl.pdf",
+      "key": "drop-babies-zine-issue-1-uk-riot-grrrl",
+      "title": "Drop Babies - Issue 1",
+      "creator": "Layla Gibbon, Greta Drummond-Gillett, Rosie",
+      "date": "1992",
+      "language": "eng",
+      "subjects": [
+        "Riot Grrrl",
+        "zines",
+        "feminism",
+        "music",
+        "UK"
+      ],
+      "rights": "unknown"
+    }
+  ]
+}

@@ -10,10 +10,10 @@ import (
 	"syscall"
 	"time"
 
-	"git.subcult.tv/subculture-collective/arkhiv/internal/catalog"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/storage"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/catalog"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/storage"
 
-	"git.subcult.tv/subculture-collective/arkhiv/internal/app"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/app"
 )
 
 func main() {

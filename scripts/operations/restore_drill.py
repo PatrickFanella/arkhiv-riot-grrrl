@@ -27,7 +27,7 @@ def drill(config):
     r.space(config['archive'])
     r.remote('python3', config['remote_script'], 'verify', '--root', source)
     stamp = dt.datetime.now(dt.timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
-    project = 'arkhiv-drill-' + stamp.lower()
+    project = 'riot-grrrl-drill-' + stamp.lower()
     work = Path(config['project']) / 'qualification' / project
     work.mkdir(mode=0o700)
     incoming = work / 'input'
@@ -49,7 +49,10 @@ def drill(config):
         'checks': {'image': config['reader_probe_image'], 'volumes': [str(proof) + ':/proof'], 'init': True, 'mem_limit': '2g', 'pids_limit': 256, 'cpus': 1},
     }
     compose_path = work / 'compose.json'
-    atomic(compose_path, {'services': services, 'networks': {'default': {'internal': True}}})
+    network = {'internal': True}
+    if config.get('restore_subnet'):
+        network['ipam'] = {'config': [{'subnet': config['restore_subnet']}]}
+    atomic(compose_path, {'services': services, 'networks': {'default': network}})
     compose = ['docker', 'compose', '-f', str(compose_path), '--project-name', project]
     started = False
     try:

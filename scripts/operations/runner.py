@@ -149,7 +149,7 @@ class Runner:
         return r.stdout.decode()
 
     def cli(self, *args):
-        return self.execute(['docker', 'compose', '-f', self.c['project'] + '/compose.json', '--project-name', 'arkhiv-pilot', '--profile', 'operator', 'run', '--rm', '-T', 'operator', *args])
+        return self.execute(['docker', 'compose', '-f', self.c['project'] + '/compose.json', '--project-name', self.c.get('compose_project', 'riot-grrrl-pilot'), '--profile', 'operator', 'run', '--rm', '-T', 'operator', *args])
 
     def remote(self, *args):
         return self.execute(['ssh', '-o', 'BatchMode=yes', self.c['backup_host'], shlex.join(args)])
@@ -231,7 +231,7 @@ class Runner:
             if not readiness.startswith(('https://', 'http://127.0.0.1:')):
                 raise ValueError('invalid public readiness destination')
             try:
-                request = urllib.request.Request(readiness, headers={'User-Agent': 'Arkhiv/0.1 (+https://arkhiv.subcult.tv; preservation readiness monitor)', 'Accept': 'application/json'})
+                request = urllib.request.Request(readiness, headers={'User-Agent': 'Arkhiv/0.1 (Riot Grrrl Archive; contact info@subcult.tv)', 'Accept': 'application/json'})
                 with urllib.request.urlopen(request, timeout=5) as response:
                     ready = json.loads(response.read(16384))
                     healthy = response.status == 200 and ready.get('status') == 'ok' and ready.get('public') is True and ready.get('revision') == self.c['public_revision']
@@ -254,7 +254,7 @@ class Runner:
             if url:
                 if not url.startswith(('https://', 'http://127.0.0.1', 'http://10.0.0.')):
                     raise ValueError('invalid notification destination')
-                req = urllib.request.Request(url, data=json.dumps({'archive': 'arkhiv', 'problems': problems, 'recovery': not problems}).encode(), headers={'Title': 'Arkhiv preservation status', 'Content-Type': 'application/json'}, method='POST')
+                req = urllib.request.Request(url, data=json.dumps({'archive': 'riot-grrrl', 'problems': problems, 'recovery': not problems}).encode(), headers={'Title': 'Riot Grrrl preservation status', 'Content-Type': 'application/json'}, method='POST')
                 with urllib.request.urlopen(req, timeout=15) as response:
                     if response.status not in (200, 201, 202):
                         raise RuntimeError('notification rejected')

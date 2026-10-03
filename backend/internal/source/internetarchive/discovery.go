@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/config"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/config"
 	"io"
 	"net/url"
 	"strconv"

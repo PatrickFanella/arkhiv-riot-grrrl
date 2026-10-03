@@ -1,12 +1,12 @@
 [Unit]
-Description=Schedule Arkhiv monitor
+Description=Schedule Riot Grrrl Archive monitor
 
 [Timer]
 OnCalendar=*:0/15 America/Chicago
 OnActiveSec=150s
 Persistent=true
 AccuracySec=1s
-Unit=arkhiv-monitor.service
+Unit=riot-grrrl-monitor.service
 
 [Install]
 WantedBy=timers.target

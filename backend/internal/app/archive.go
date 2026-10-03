@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"strings"
 
-	"git.subcult.tv/subculture-collective/arkhiv/internal/catalog"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/index"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/storage"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/catalog"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/index"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/storage"
 )
 
 func ArchiveHandler(db *catalog.DB, store *storage.Store) http.Handler {

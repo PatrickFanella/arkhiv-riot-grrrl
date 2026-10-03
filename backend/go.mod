@@ -1,4 +1,4 @@
-module git.subcult.tv/subculture-collective/arkhiv
+module git.subcult.tv/subculture-collective/arkhiv-riot-grrrl
 
 go 1.26
 

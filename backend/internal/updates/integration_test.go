@@ -15,12 +15,12 @@ import (
 	"testing"
 	"time"
 
-	"git.subcult.tv/subculture-collective/arkhiv/internal/catalog"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/config"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/fixtures"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/ingest"
-	ia "git.subcult.tv/subculture-collective/arkhiv/internal/source/internetarchive"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/storage"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/catalog"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/config"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/fixtures"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/ingest"
+	ia "git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/source/internetarchive"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/storage"
 	"github.com/jackc/pgx/v5"
 )
 
