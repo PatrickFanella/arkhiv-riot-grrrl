@@ -49,7 +49,10 @@ when no public domain has been configured. Correction contact: info@subcult.tv.
 
 ## Qualification and operations
 
-Pilot qualification is in progress. Use a separate archive root, database,
+The real private pilot is qualified: seven PDFs and five OCR companions are preserved,
+and the independent NUC restore passed all seven local reading/download checks.
+See the [dated qualification report](docs/reports/riot-grrrl-pilot-qualification-20261003.md).
+Use a separate archive root, database,
 Compose project, loopback port and NUC backup destination. No public ingress or
 public document approval is included in this bootstrap. The candidate Caddy
 file deliberately requires an approved domain before installation.

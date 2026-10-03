@@ -1,6 +1,6 @@
 # Riot Grrrl archive pilot
 
-Date: 2026-10-03. Status: implementation prepared; real qualification in progress.
+Date: 2026-10-03. Status: real private pilot qualified; [evidence](../reports/riot-grrrl-pilot-qualification-20261003.md).
 
 ## Sources
 
@@ -44,8 +44,7 @@ some text difficult to read. Qualification must retain that limitation.
 ## Isolation and release
 
 Use Almaz `/mnt/spektr/server/data/arkhiv-riot-grrrl`, loopback web port 54620,
-and NUC `/home/onnwee/backups/arkhiv-riot-grrrl`. These destinations must be
-confirmed before use. Do not change or restart the existing Arkhiv deployment.
+and NUC `/home/onnwee/backups/arkhiv-riot-grrrl`. These separate destinations were confirmed and are now active. Do not change or restart the existing Arkhiv deployment.
 Use the Arkhiv T3 recipe explicitly from this root; the original thread remains
 in its own checkout. Acquisition requires a separate outbound workflow.
 
