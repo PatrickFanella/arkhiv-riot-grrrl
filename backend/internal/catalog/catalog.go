@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"sort"
 
-	"git.subcult.tv/subculture-collective/arkhiv/internal/config"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/config"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )

@@ -1,101 +1,60 @@
-# Arkhiv
+# Riot Grrrl Zine Archive
 
-Arkhiv acquires explicitly selected document files, preserves their original bytes,
-and serves branded catalogs with local PDF reading and downloads. The first
-collection is the Anarchist Zine Archive.
+A separate Arkhiv application for preserving, cataloging and reading Riot Grrrl zines.
+The initial selection is seven issues of **Girl Germs, VOOP and Drop Babies**, dated
+1991–1993 in Internet Archive source metadata. The site uses a dark magenta ink
+palette, bold paper-label masthead and local PDF reader.
 
-The implementation includes a PostgreSQL catalog, operator CLI, bounded resumable
-acquisition, editorial review, text and cover extraction, metadata/page search,
-and backup/restore. The initial manifest selects 25 documents, 26 PDF variants,
-and 17 matching OCR companions from Internet Archive's `ZineArchive` item.
-The [private pilot qualification](docs/reports/pilot-qualification-20261002.md) passed:
-all originals were verified, the independent NUC backup was restored, and on-site
-reading/search/downloads worked with Archive.org blocked. The initial implementation merged in PR #19; hardening and the qualification
-report merged in [PR #20](https://git.subcult.tv/subculture-collective/arkhiv/pulls/20).
-The owner-approved first collection is live at [arkhiv.subcult.tv](https://arkhiv.subcult.tv). Its 26 reviewed PDF variants are available for public reading/downloads with unknown rights, source attribution, correction/removal contact and no asserted reuse license.
+This repository copies Arkhiv at `c6a816203a418f284efeb36f2d3db2afdb34e9b7`,
+retaining its history, operator CLI, preservation store, PostgreSQL catalog,
+full-text search, local PDF.js reader, public allowlist and recovery tooling.
+The existing Anarchist Zine Archive is a separate service. Its approvals and
+stored documents are not inherited by this archive.
 
-The [next delivery plan](docs/plans/0002-managed-archive-and-public-release.md)
-covers merged-revision rollout, scheduled preservation and active-source updates,
-public release, and a second real archive. Managed jobs are installed and initially qualified. A-Info adds 15 privately reviewed issues; a fresh independent NUC restore verified all 40 documents/41 PDF variants with source access blocked. Gitea #21–#38 records the separate implementation and live evidence.
+## Source and collection
+
+[Collection configuration](collections/riot-grrrl.yaml) selects original PDFs
+explicitly across seven Archive.org items. Originals total 255,459,265 bytes;
+OCR companions are acquired when available. Caps: 10 documents, 384 MiB total,
+100 MiB per file, two concurrent transfers. Raw source snapshots and verified
+files stay outside Git. Source rights are unknown; no reuse license is asserted.
+
+[Source research and qualification plan](docs/plans/0003-riot-grrrl-pilot.md)
+records the source choices, private qualification and release boundaries.
+The discovery query follows the seven selected item identities. Weekly refresh
+queues changes for review; it does not discover every Riot Grrrl zine or publish
+new editions automatically.
 
 ## Development
 
-Stack: Go 1.26+, Node 24, pnpm 10.33.0, React/Vite, PostgreSQL 17, Docker Compose.
+Use Go 1.26, Node 24 and pnpm 10.33.0. Read `AGENTS.md` and the shared T3 guide.
+The existing Arkhiv recipe can be selected explicitly, with state isolated by root:
 
 ```sh
+t3-dev --profile arkhiv verify
 t3-dev --profile arkhiv start
 t3-dev --profile arkhiv sync
-t3-dev --profile arkhiv verify
-t3-dev --profile arkhiv test --command 'make test-integration'
-t3-dev --profile arkhiv stop
-make test-browser
 ```
 
-The T3 preview seeds two clearly labeled synthetic collections. Its application
-and test networks cannot reach Archive.org. The integration snapshot uses
-PostgreSQL 15 to match the shared tools image's backup client; the isolated browser
-suite and homelab pilot use PostgreSQL 17 with a matching client. Browser tests
-run in a separate disposable Compose project and clean up their own containers.
-`make test-recovery` runs the recovery assertions in the integration suite.
+The preview contains synthetic documents, not acquired zines. `make verify` checks
+formatting, Go vet/tests, TypeScript, lint, frontend tests/build, Compose and
+Open Pilot templates. `make test-browser` checks desktop/narrow local rendering
+with a disposable PostgreSQL 17 database. Hosted CI is separate evidence.
 
-`make verify` checks formatting, TypeScript, lint, Go/web tests, both Go binaries,
-web build, Compose configuration, and the retained Open Pilot template. Database
-integration runs when `TEST_DATABASE_URL` points to the disposable launcher DB;
-the explicit integration target refuses to run without it. Hosted CI and rendered
-pilot/restore evidence remain separate checks.
+The CLI retains the name `arkhiv`; its Go module is
+`git.subcult.tv/subculture-collective/arkhiv-riot-grrrl`. The default collection
+is `collections/riot-grrrl.yaml`. Local Compose defaults use ports 5434/8082/5175.
+`VITE_PUBLIC_URL` is optional; canonical and contact links use the current origin
+when no public domain has been configured. Correction contact: info@subcult.tv.
 
-For a manual container build, `docker compose up --build` serves loopback port
-5173. The API applies checksum-locked migrations and requires a managed archive
-root when a database is configured. The sample database password is for disposable
-local development. `/api/health` checks process health; `/api/ready` checks database
-connectivity. Catalog and asset routes are read-only; mutations use the CLI.
+## Qualification and operations
 
-The [operator runbook](docs/runbooks/pilot-operations.md) covers planning, acquisition,
-review, extraction, integrity checks, backup, and restore. Acquired documents,
-credentials, generated data, and binaries stay outside Git. Original source
-metadata remains independent of editorial overrides.
+Pilot qualification is in progress. Use a separate archive root, database,
+Compose project, loopback port and NUC backup destination. No public ingress or
+public document approval is included in this bootstrap. The candidate Caddy
+file deliberately requires an approved domain before installation.
 
-## Project documents
-
-- [Anarchist Zine Archive milestone](docs/plans/0001-anarchist-zine-archive.md)
-- [Managed operations, public release, and second archive](docs/plans/0002-managed-archive-and-public-release.md)
-- [Pilot operations and recovery](docs/runbooks/pilot-operations.md)
-- [Stack and development boundaries](docs/reference/stack.md)
-- [Documentation index](docs/README.md)
-- [Open Pilot](docs/open-pilot.md)
-
-Source code is GPL-3.0-only; that license does not apply to acquired documents.
-
-The public site uses `https://arkhiv.subcult.tv`, with correction and removal requests directed to `info@subcult.tv`. Only the exact reviewed first-archive variants are public approved; A-Info remains private. The [roadmap](docs/plans/0002-managed-archive-and-public-release.md) records access review, activation and qualification separately.
-Managed job runners are documented in [the operations runbook](docs/runbooks/managed-operations.md).
-
-## Reviewed public access
-
-Private publication and public approval are separate decisions. `ARKHIV_PUBLIC=1`
-starts the API with the variant allowlist enforced on collections, catalog, search,
-facets, covers, reading and downloads. It does not run migrations; deploy migrations
-with the operator first and use a separate read-only database role and read-only
-archive mount. The private pilot API remains available for internal qualification.
-
-The owner approved public archival access to the exact 25-document, 26-variant
-manifest in `collections/anarchist-zines-public-review.json`. Rights remain unknown;
-Arkhiv asserts no reuse license. The public URL is `https://arkhiv.subcult.tv` and
-correction/removal contact is `info@subcult.tv`. Build-time `VITE_PUBLIC_URL` and
-`VITE_CORRECTION_CONTACT` customize those values for another installation.
-
-Apply a reviewed manifest with the operator command `approve-public --manifest PATH
---review "owner decision and evidence"`. It verifies source/document identity,
-original filename, SHA-256, size, private publication and readable extraction before
-committing the entire approval. `revoke-public --variant ID --review "reason"`
-withdraws catalog, search, cover, reader and download access and preserves originals
-and decision history. New variants start unapproved, including additions to a
-privately published document. The source updater never grants public access.
-
-`web/nginx.public.conf` routes only to the dedicated public API and disables proxy
-caching. Catalog and document responses use `Cache-Control: no-store`; approval is
-checked before conditional or range handling. Copies already downloaded by a reader
-cannot be recalled by revocation.
-
-Source update jobs persist payload `Retry-After` deadlines and stop further source requests until that deadline. Expired payload backoff resumes pending acquisition before the next collection cadence. For a bounded operator qualification, `refresh --scheduled --force-source-check` bypasses cadence while retaining disabled-collection and source-backoff checks; ordinary scheduled runs keep each collection's configured cadence.
-
-The public entry page includes Open Graph and Twitter summary metadata. Document canonical links and titles update in the browser; document-specific social previews are not server rendered. Public readiness monitoring checks the qualified revision and mode.
+Earlier plans and dated reports under `docs/` describe the upstream Arkhiv
+project. They are retained as implementation history, not evidence that this
+Riot Grrrl pilot has been qualified or publicly released. Start with the Riot
+Grrrl plan and its dated qualification report for this repository's state.

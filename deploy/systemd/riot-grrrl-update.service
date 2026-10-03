@@ -1,5 +1,5 @@
 [Unit]
-Description=Arkhiv retention job
+Description=Riot Grrrl Archive update job
 After=network-online.target docker.service
 Wants=network-online.target
 
@@ -7,7 +7,7 @@ Wants=network-online.target
 Type=oneshot
 User=onnwee
 Group=onnwee
-ExecStart=/usr/bin/python3 /mnt/spektr/server/data/arkhiv/operations/runner.py retention --config /mnt/spektr/server/data/arkhiv/operations/config.json
+ExecStart=/usr/bin/python3 /mnt/spektr/server/data/riot-grrrl-riot-grrrl/operations/runner.py update --config /mnt/spektr/server/data/riot-grrrl-riot-grrrl/operations/config.json
 TimeoutStartSec=20min
 MemoryMax=512M
 CPUQuota=50%

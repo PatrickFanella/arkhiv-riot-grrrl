@@ -3,7 +3,7 @@ WORKDIR /src
 COPY package.json pnpm-lock.yaml ./
 RUN corepack enable && pnpm install --frozen-lockfile
 COPY . ./
-ARG VITE_PUBLIC_URL=https://arkhiv.subcult.tv
+ARG VITE_PUBLIC_URL=
 ARG VITE_CORRECTION_CONTACT=info@subcult.tv
 ENV VITE_PUBLIC_URL=$VITE_PUBLIC_URL VITE_CORRECTION_CONTACT=$VITE_CORRECTION_CONTACT
 RUN pnpm run build

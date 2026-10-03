@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"strings"
 
-	"git.subcult.tv/subculture-collective/arkhiv/internal/storage"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/storage"
 )
 
 // PublicReview binds owner access decisions to immutable variant identities.

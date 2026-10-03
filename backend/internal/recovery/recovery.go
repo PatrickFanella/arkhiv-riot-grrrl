@@ -13,8 +13,8 @@ import (
 	"path/filepath"
 	"reflect"
 
-	"git.subcult.tv/subculture-collective/arkhiv/internal/catalog"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/storage"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/catalog"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/storage"
 	"github.com/jackc/pgx/v5"
 	"strconv"
 )

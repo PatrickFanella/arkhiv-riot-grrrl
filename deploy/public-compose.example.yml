@@ -2,7 +2,7 @@
 # Keep PUBLIC_DATABASE_URL in the existing private .env, never in Git.
 services:
   public-api:
-    image: arkhiv-api:${ARKHIV_PUBLIC_REVISION:?set exact verified image tag}
+    image: riot-grrrl-api:${ARKHIV_PUBLIC_REVISION:?set exact verified image tag}
     user: '1000:1000'
     environment:
       ARKHIV_PUBLIC: '1'
@@ -19,13 +19,13 @@ services:
     cpus: 1
     restart: unless-stopped
   public-web:
-    image: arkhiv-web:${ARKHIV_PUBLIC_REVISION:?set exact verified image tag}
+    image: riot-grrrl-web:${ARKHIV_PUBLIC_REVISION:?set exact verified image tag}
     volumes: [./public-nginx.conf:/etc/nginx/conf.d/default.conf:ro]
-    ports: [127.0.0.1:54614:80]
+    ports: [127.0.0.1:54624:80]
     networks:
       public-reader: {}
       projects:
-        aliases: [arkhiv-public-web]
+        aliases: [riot-grrrl-public-web]
     mem_limit: 128m
     pids_limit: 128
     cpus: 0.5

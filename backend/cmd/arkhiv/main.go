@@ -13,15 +13,15 @@ import (
 	"syscall"
 	"time"
 
-	"git.subcult.tv/subculture-collective/arkhiv/internal/catalog"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/config"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/fixtures"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/index"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/ingest"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/recovery"
-	ia "git.subcult.tv/subculture-collective/arkhiv/internal/source/internetarchive"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/storage"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/updates"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/catalog"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/config"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/fixtures"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/index"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/ingest"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/recovery"
+	ia "git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/source/internetarchive"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/storage"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/updates"
 )
 
 func main() {
@@ -38,7 +38,7 @@ func run(ctx context.Context, args []string) error {
 	}
 	command := args[0]
 	flags := flag.NewFlagSet(command, flag.ContinueOnError)
-	conf := flags.String("config", "../collections/anarchist-zines.yaml", "collection YAML")
+	conf := flags.String("config", "../collections/riot-grrrl.yaml", "collection YAML")
 	archive := flags.String("archive", os.Getenv("ARKHIV_ARCHIVE"), "archive root")
 	migrations := flags.String("migrations", "../migrations", "migration directory")
 	variant := flags.String("variant", "", "variant ID for grouping or public revocation")

@@ -1,12 +1,12 @@
 [Unit]
-Description=Schedule Arkhiv restore
+Description=Schedule Riot Grrrl Archive restore
 
 [Timer]
 OnCalendar=*-*-01 05:00:00 America/Chicago
 OnActiveSec=240s
 Persistent=true
 AccuracySec=1s
-Unit=arkhiv-restore.service
+Unit=riot-grrrl-restore.service
 
 [Install]
 WantedBy=timers.target

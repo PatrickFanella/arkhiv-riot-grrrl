@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"time"
 
-	"git.subcult.tv/subculture-collective/arkhiv/internal/catalog"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/config"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/catalog"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/config"
 	"github.com/jackc/pgx/v5"
 )
 

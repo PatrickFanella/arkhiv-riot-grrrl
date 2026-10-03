@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"git.subcult.tv/subculture-collective/arkhiv/internal/catalog"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/config"
-	ia "git.subcult.tv/subculture-collective/arkhiv/internal/source/internetarchive"
-	"git.subcult.tv/subculture-collective/arkhiv/internal/storage"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/catalog"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/config"
+	ia "git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/source/internetarchive"
+	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/storage"
 )
 
 type sourceRecord struct {

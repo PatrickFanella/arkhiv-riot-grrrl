@@ -1,12 +1,12 @@
 [Unit]
-Description=Schedule Arkhiv audit
+Description=Schedule Riot Grrrl Archive audit
 
 [Timer]
 OnCalendar=02:00 America/Chicago
 OnActiveSec=30s
 Persistent=true
 AccuracySec=1s
-Unit=arkhiv-audit.service
+Unit=riot-grrrl-audit.service
 
 [Install]
 WantedBy=timers.target
