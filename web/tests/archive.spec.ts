@@ -16,7 +16,7 @@ test("catalog, page search, local PDF rendering, navigation and download", async
     return style.outlineStyle !== "none" && parseFloat(style.outlineWidth) >= 2;
   })).toBeTruthy();
   await expect(
-    page.getByRole("heading", { name: "Mutual aid fixture" }),
+    page.getByRole("heading", { name: "Mutual aid fixture" }).first(),
   ).toBeVisible();
   await expect(page.getByText("Private fixture", { exact: true })).toHaveCount(
     0,
@@ -62,7 +62,7 @@ test("catalog, page search, local PDF rendering, navigation and download", async
 test("empty, error, loading and second configuration", async ({ page }) => {
   await page.goto("/?collection=fixture-second");
   await expect(
-    page.getByRole("heading", { name: "Mutual aid fixture" }),
+    page.getByRole("heading", { name: "Mutual aid fixture" }).first(),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Second synthetic archive" }),
@@ -92,4 +92,36 @@ test("empty, error, loading and second configuration", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("status")).toContainText("Loading");
   await expect(page.getByRole("alert")).toContainText("could not load");
+});
+
+test("cover fallback, scoped filters and narrow catalog layout", async ({ page }) => {
+  await page.route("**/api/assets/*/cover", route => route.abort());
+  await page.goto("/?collection=fixture-zines");
+  await expect(page.getByText("Cover unavailable").first()).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.getByRole("region", { name: "From the collection" })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+  await page.getByLabel("Search titles and available text").fill("knownword");
+  await page.getByRole("button", { name: "Search", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Search results" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "From the collection" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Page 2", exact: true })).toBeVisible();
+  await expect(page.locator('input[name="collection"]')).toHaveValue("fixture-zines");
+});
+
+test("selected identity fits the configured catalog", async ({ page }) => {
+  await page.route("**/api/collections", async route => {
+    const response = await route.fetch();
+    const collections = await response.json();
+    const collection = collections.find((entry: { id: string }) => entry.id === "fixture-zines");
+    collection.name = "Riot Grrrl Zine Archive";
+    await route.fulfill({ response, json: collections });
+  });
+  await page.goto("/?collection=fixture-zines");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Zine Archive");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+  await expect(page.getByRole("link", { name: "Open Mutual aid fixture", exact: true }).first()).toBeVisible();
+  await page.getByRole("link", { name: "Open Mutual aid fixture", exact: true }).first().click();
+  await expect(page.getByRole("link", { name: "Read on site", exact: true })).toBeVisible();
+  await expect(page.getByText("No reuse license is asserted.", { exact: false })).toBeVisible();
 });
