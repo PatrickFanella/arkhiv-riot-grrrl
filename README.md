@@ -61,3 +61,7 @@ Earlier plans and dated reports under `docs/` describe the upstream Arkhiv
 project. They are retained as implementation history, not evidence that this
 Riot Grrrl pilot has been qualified or publicly released. Start with the Riot
 Grrrl plan and its dated qualification report for this repository's state.
+
+## Catalog design studies
+
+Three development-only catalog previews explore the owner-supplied [inspiration files](docs/inspo/). See [preview directions and launch instructions](docs/design/catalog-previews.md). Selection is pending; the qualified production interface is unchanged.

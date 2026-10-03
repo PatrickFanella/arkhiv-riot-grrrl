@@ -51,3 +51,7 @@ in its own checkout. Acquisition requires a separate outbound workflow.
 Public approval from the Anarchist Zine Archive applies only to its exact reviewed
 manifest. This new archive remains private through qualification. A later public
 release needs a reviewed variant manifest, owner access decision and selected domain.
+
+## Catalog design follow-up
+
+The owner requested a full DIY Riot Grrrl zine identity. Three [development-only studies](../design/catalog-previews.md) compare distinct compositions. Select and implement a direction against the existing catalog and reader before replacing the qualified interface.
