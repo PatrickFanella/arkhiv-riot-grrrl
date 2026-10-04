@@ -57,10 +57,12 @@ backup passed integrity verification. A fresh isolated restore then passed all
 44 asset checks and all 23 local download/reader checks. See the [expansion qualification report](docs/reports/riot-grrrl-expansion-qualification-20261003.md).
 The [original pilot report](docs/reports/riot-grrrl-pilot-qualification-20261003.md)
 retains the earlier seven-document restore evidence.
-Use a separate archive root, database,
-Compose project, loopback port and NUC backup destination. No public ingress or
-public document approval is included in this bootstrap. The candidate Caddy
-file deliberately requires an approved domain before installation.
+The public site is [riot-grrrl.subcult.tv](https://riot-grrrl.subcult.tv/). Its
+[reviewed manifest](collections/riot-grrrl-public-review.json) approves these exact
+23 PDFs, without asserting a reuse license. It uses a separate restored database,
+read-only serving role and archive mount. The original private pilot remains
+separate. See the [public rollout report](docs/reports/riot-grrrl-public-rollout-20261004.md)
+for actual HTTP, reader and deployment evidence. Fresh public recovery passed all 17 table counts and all 23 PDF hashes.
 
 Earlier plans and dated reports under `docs/` describe the upstream Arkhiv
 project. They are retained as implementation history, not evidence that this
@@ -69,4 +71,5 @@ Grrrl plan and its dated qualification report for this repository's state.
 
 ## Catalog design
 
-The owner selected **A — Cut & Paste** from the [inspiration studies](docs/design/catalog-previews.md). The interface now displays real catalog metadata and local cover scans in the selected layout, with existing search, reading, downloads and rights information. The comparison prototypes are removed. The selected frontend is deployed to the private Almaz service; all 23 PDFs passed download/hash/render checks against it. Public release remains a separate owner decision.
+The owner selected **A — Cut & Paste** from the [inspiration studies](docs/design/catalog-previews.md). The interface now displays real catalog metadata and local cover scans in the selected layout, with existing search, reading, downloads and rights information. The comparison prototypes are removed. The selected frontend is deployed to the private Almaz service; all 23 PDFs passed download/hash/render checks against it. The owner authorized public rollout on October 4; the same distinct interface
+is now live on the public hostname.

@@ -59,3 +59,13 @@ The owner selected **A — Cut & Paste** on October 3. The [selected interface](
 ## Collection expansion
 
 The owner requested a broader collection. [The bounded expansion plan](0004-riot-grrrl-expansion.md) adds sixteen reviewed source identities to the private pilot; qualification will record the resulting catalog and backup.
+
+## Public rollout, October 4
+
+The owner authorized rollout and selected `riot-grrrl.subcult.tv`. The public
+release uses the individually hash-bound 23-PDF review manifest and a separate
+restored database and archive copy. Source rights remain unknown. All public
+PDF downloads match their recorded sizes and hashes; the actual HTTPS reader
+paints pages without an alert. The retained private pilot is unchanged.
+[Public rollout evidence](../reports/riot-grrrl-public-rollout-20261004.md) records
+the large-PDF streaming fix and passed fresh independent public recovery.

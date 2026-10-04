@@ -1,0 +1,332 @@
+{
+  "format": 1,
+  "collection": "riot-grrrl",
+  "public_url": "https://riot-grrrl.subcult.tv",
+  "correction_contact": "info@subcult.tv",
+  "public_approval": "Owner instructed continuation through public rollout on October 4, 2026. This manifest covers only the 23 independently qualified original PDF scans; retain unknown rights, attribution and correction/removal contact. It grants archival reading and original downloads without asserting a reuse license.",
+  "reuse_license_asserted": false,
+  "documents": [
+    {
+      "id": "0257a741bfefc82cbbfa497e8ac6ccbe9e947c75400a05933e65b84a647f63d8",
+      "source_item": "drop-babies-zine-issue-1-uk-riot-grrrl",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "fb4ec8725b8a931447f65570bccf62dc5298507f2eb73a9edae7832aa8362b29",
+          "filename": "Drop Babies zine issue 1 - UK Riot Grrrl.pdf",
+          "sha256": "76ca8c3668ad49d0ca6d319871e4065e70ccb5aec8c27523905e76bbd1a596b4",
+          "size": 87327286
+        }
+      ]
+    },
+    {
+      "id": "0f00223af61c1cf97a5d9ba0fa1bd77c24d72221b8f902a58ca102de8143b158",
+      "source_item": "voop-issue-3-uk-riot-grrl-zine",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "a48cbb6da7de40f7bd311cfdd21962882dc81a6c916a0113727a7855039922f8",
+          "filename": "VOOP issue 3 - UK Riot Grrl zine.pdf",
+          "sha256": "c18a0e738cc3f7174792d500edd32f9902b92ca8af1600a687ec69c8aacb24db",
+          "size": 22991007
+        }
+      ]
+    },
+    {
+      "id": "1234abd7af2edc2f8f353b1ddb758e432ff65a4278bcd1785ef3bbeb0d9f4f26",
+      "source_item": "no-apologies-3",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "89e954e5cc6d4965ca4a59f23c857937c0cee29ba5bd209e19b6906e8a63dfa9",
+          "filename": "no apologies 3.pdf",
+          "sha256": "7dc2aea9b3336425e34d3cf071288e30ad5ee824cf3b160a5af703397ecfcb52",
+          "size": 49691484
+        }
+      ]
+    },
+    {
+      "id": "12582a323f1d3e50809bf95d8ec4a271be44b74e113dfdc5692fd67ee316a047",
+      "source_item": "girl-cola-4",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "0fdccb00e5d8f79403ab0ae086a2410a6abe7d9b0e7df3e3f73047be9aa094d7",
+          "filename": "Girl Cola #4.pdf",
+          "sha256": "da50a7cda65bb24a46a4fb2b14ad65968bad1c36cf586b24e6366eda03d813b3",
+          "size": 968370
+        }
+      ]
+    },
+    {
+      "id": "20f2293b82f33974c07686bd66678d2807f384423c879322383c142d29332892",
+      "source_item": "personality-liberation-front-3",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "2ddfd6647da633ae5300a1b9e570804ea5295327e03627fbb33aeda0a4fc1929",
+          "filename": "Personality Liberation Front 3.pdf",
+          "sha256": "d2ecf5f3801b2bf2ec0e02696f09dd0c5b77d26148b5de5011f0f607286b0302",
+          "size": 131344910
+        }
+      ]
+    },
+    {
+      "id": "21a7945f832fa7c35a0f5334f5314a83cc413a24f003d5c4499aff4341bdeffc",
+      "source_item": "glorianne-a-girls-guide-to-getting-involved",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "88bd48831ba891705d317cd489215bbbc0161504f76ddc74e9e80e47e8751185",
+          "filename": "Glorianne - A Girl's Guide to Getting Involved.pdf",
+          "sha256": "1f50070e0a563834e0e9b9c96c553e94d04fcc082fe4d737c6c09e82ffdbda74",
+          "size": 15897007
+        }
+      ]
+    },
+    {
+      "id": "24aa00e80e1d8e79b6115e2760c431098cf3c5ff0421cdfd99dc3652707306e2",
+      "source_item": "veneer-4",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "99fffa2a5b2420042966b544fe24a3dc9f8739fa2098d3e4c7b1a2224cbfd6a6",
+          "filename": "Veneer #4.pdf",
+          "sha256": "4d63e606f5f92f611cd4a6d39d0adda79a3d31bab295fe43ffc40437991b792e",
+          "size": 7765137
+        }
+      ]
+    },
+    {
+      "id": "28aecd7abd76dbc027812f8cfb73642f6b5e06a7f38c5337f93e914c5231586f",
+      "source_item": "voop-issue-1-uk-riot-grrl-zine",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "a05a3f19311c6b2fa05035116ff999f737f5ceaa5b790acc2476237e40a415c1",
+          "filename": "VOOP issue 1 - UK Riot Grrl zine.pdf",
+          "sha256": "2aa92ecc2d5de28e17de04145c67dca88da36fee1a23385d63ea6c364a1d9430",
+          "size": 55320589
+        }
+      ]
+    },
+    {
+      "id": "3b33748c557c008f1111784d62c30042552658edcca1239ab7a22e7029375a44",
+      "source_item": "voop-issue-5-uk-riot-grrl-zine",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "140ae1aed09e27c0ca8db451c055e180e494615a947e8cec6f1b3c1b49ff27e9",
+          "filename": "VOOP issue 5 - UK Riot Grrl zine.pdf",
+          "sha256": "efa2dac74fd83b7bd7b0edf60f5be8a437dc689877771589926b294ad1a10c92",
+          "size": 32960957
+        }
+      ]
+    },
+    {
+      "id": "55c8b3199c4a8db8c1186d4ad902f554dd50ec4e28b9628dc542f6ea769af03d",
+      "source_item": "personality-liberation-front-1-1997",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "23138cc76a0276d69c5313e0040d510416bb7a11bbcabb108a4183cc812df24d",
+          "filename": "Personality LIberation Front 1 1997.pdf",
+          "sha256": "05bb2937ee3611bd1671609b5b54782b2b629d77b57a5de793dcad12d81dc047",
+          "size": 147357204
+        }
+      ]
+    },
+    {
+      "id": "64c35c00241814d8f7d3ea04f7ac26dc70dfa0d17324843c81b6bcac9dcd3b67",
+      "source_item": "violet-zine-volume-4",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "af7a1ed64285736503766d3da1e99c37ab36e8a2c963987afb3b935a2a9f7646",
+          "filename": "Violet_Zine_Volume_4_.pdf",
+          "sha256": "2d2e7a833cfff4f0eadf9dc0194b65e59be7af815467f6c5981ebbc25c929bb5",
+          "size": 3327470
+        }
+      ]
+    },
+    {
+      "id": "6877b8cfd1152634c0fee889613bf619f34e9e96257686b5573bb24ec78caf6a",
+      "source_item": "violet-zine-volume-5",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "7fa33b425ce927925dbec4c91b60fa074ac94fdda59a73bf71ffd39c03512a07",
+          "filename": "Violet_Zine_Volume_5_.pdf",
+          "sha256": "39fca1e2f82d19eec83d39a980c9817df1e978cf374f9025ed502d36c5ac7591",
+          "size": 3139277
+        }
+      ]
+    },
+    {
+      "id": "7898bc15f579edea2872d1504aabe2a19c80bb21da80a56cf99b9270d07addac",
+      "source_item": "no-apologies-1998_202508",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "3fbc4f6823375ab6795589cf78cadedae0808995af242439c107658d07123fc0",
+          "filename": "No Apologies - 1998.pdf",
+          "sha256": "f95d434aab9fb788c76b1d4a372554b256e36a51f43f7f65fdce90edc314a45f",
+          "size": 36713118
+        }
+      ]
+    },
+    {
+      "id": "7ca4d40cf0dfd7b10c0787818ba30eedbc68bcb3772cb0f87039857b50ed0a2b",
+      "source_item": "girl-germs-4",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "b7afd81cc52f57bda60b10b01d636841049934078c50e0245895a2a49b254341",
+          "filename": "Girl Germs 4.pdf",
+          "sha256": "b4c4c928ee4d37a2f9d07e86bf081efa76c35117e52b5a3d8e103ea749d07478",
+          "size": 18020109
+        }
+      ]
+    },
+    {
+      "id": "80e2390ba2174f2c9d317c1752d2428749787efa45fe468e816216aae4bb2ba2",
+      "source_item": "voop-issue-2-uk-riot-grrl-zine",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "aef9e16d94330766ae0f5d9c8f4c2bd4d8cdc9b118a27593a3d84928b516f7f4",
+          "filename": "VOOP issue 2 - UK Riot Grrl zine.pdf",
+          "sha256": "6fb6773fccc74e6476d7a4b383f230fde18e3828b5abcb3a7222577244e421ec",
+          "size": 30169602
+        }
+      ]
+    },
+    {
+      "id": "8afe25bef0335dad1f7539a833fd9c4415783ee581d43847ec50b40d6eacaaa6",
+      "source_item": "violet-zine-vol-1",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "5570b51efeda95508f68a03d5fff30d0f3765309ca7045523a89748242dd470c",
+          "filename": "Violet_zine_vol_1.pdf",
+          "sha256": "4a188d8dae9af1e4cde7b109ad9c52a4b94fd5d2edce37e5ca3d6d535e2fbb63",
+          "size": 40460945
+        }
+      ]
+    },
+    {
+      "id": "aa51054359f25a902517be1b8dd767f8cdc35da6d43e542336717974da169ccc",
+      "source_item": "personallity-liberation-front-2",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "157a03b4edd5e2c03c402b11c7a5b6387862a484ebefa2ef783a5dc44acbd687",
+          "filename": "Personallity Liberation Front 2.pdf",
+          "sha256": "aca071d33f0ad1575d3884e97c14d9c444007be057cbb69b9aa6760936612e63",
+          "size": 135091075
+        }
+      ]
+    },
+    {
+      "id": "b282605e5bdfc5e3e0b95c5c073b500891020733e783e30e7689681a29d91fd8",
+      "source_item": "personality-liberation-front-4-2003",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "5fc0a3b58a3fecd4cc10f091ba92279e4e5fe6d7c4a54376eacf6f296e78b0fa",
+          "filename": "Personality Liberation Front 4 - 2003.pdf",
+          "sha256": "f7aa09a7c9e212cd593619060f25738a299fda69efe713ee4139d178d6449dcd",
+          "size": 42569638
+        }
+      ]
+    },
+    {
+      "id": "b33344f20060e2d97268444ee24065b8949de62d75335c3205d5859f4a66bd04",
+      "source_item": "persenones",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "aeff52a30bfaf6af13b312c2e36a62d4fce122daaa5f4e64ca36ac052a71ac5d",
+          "filename": "persenones (1).pdf",
+          "sha256": "11bd94209805d7f1edcf732c762a10d0628f6f826e94fb9d38688f46732fac4e",
+          "size": 1605694
+        }
+      ]
+    },
+    {
+      "id": "c1b903253536825a4ddc458cb0a76821e7207bc19096f3a35921380cad466102",
+      "source_item": "no-apologies-2-1999_202508",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "d3842e1626c424b70c18f3d25c3fc4e425c3e1ffd38c42bcd4b5a08dfd3bf38a",
+          "filename": "No Apologies 2  1999.pdf",
+          "sha256": "654fffce6084db9d45768be086389f4a3fc6fff29b987afe8d817fcdff300b1e",
+          "size": 48954232
+        }
+      ]
+    },
+    {
+      "id": "d15cf0a92d6b0870693d6a5a3dd0cc5a454cfe1f9ba979a36064730178e653bf",
+      "source_item": "violet-zine-volume-3",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "922c3480ad7f4f8ed9e8c1a1aac1287aee04893dfa31db7f66d64b1771acce55",
+          "filename": "Violet_Zine_Volume_3_.pdf",
+          "sha256": "a5e5d105944baf54c2a35bee888de1ca0ecace28697a7ca21be7ad2194ca105a",
+          "size": 3140656
+        }
+      ]
+    },
+    {
+      "id": "d7354871b4b41dd622eb9f8ffb69fc4c0771b1714452ef1486a868ced2f33de3",
+      "source_item": "violet-zine-volume-2",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "c41b4b5eb95a4fb70aab7d46f4dffa7e4697d6314636b178cfbfd212b55819f6",
+          "filename": "Violet_Zine_Volume_2_.pdf",
+          "sha256": "d69a600038b97fe98d16bbba92f055f8aac71562bbb8412b6f951edbf5eaded7",
+          "size": 13079302
+        }
+      ]
+    },
+    {
+      "id": "f3c8e4e158c40cc48b9a972986f2ac15b3ecfb9622b664cc6bf35067ad7348c5",
+      "source_item": "girl-germs-3",
+      "rights_status": "unknown",
+      "public_approved": true,
+      "variants": [
+        {
+          "id": "2ac0e259cb3316b5df2ef01c72bf340f19c2900ae05c5652100e7f94e9ba99e6",
+          "filename": "Girl Germs 3.pdf",
+          "sha256": "be52af4fcfc85ebadfdc89f6f4605a49c578c8ba5916bfaaa80af085e3945656",
+          "size": 8669715
+        }
+      ]
+    }
+  ]
+}

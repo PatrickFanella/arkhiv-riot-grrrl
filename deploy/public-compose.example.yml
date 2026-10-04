@@ -20,6 +20,7 @@ services:
     restart: unless-stopped
   public-web:
     image: riot-grrrl-web:${ARKHIV_PUBLIC_REVISION:?set exact verified image tag}
+    user: '101:101'
     volumes: [./public-nginx.conf:/etc/nginx/conf.d/default.conf:ro]
     ports: [127.0.0.1:54624:80]
     networks:
@@ -27,6 +28,12 @@ services:
       projects:
         aliases: [riot-grrrl-public-web]
     mem_limit: 128m
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs:
+      - /var/cache/nginx:size=16m,uid=101,gid=101
+      - /var/run:size=4m,uid=101,gid=101
     pids_limit: 128
     cpus: 0.5
     restart: unless-stopped
