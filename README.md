@@ -69,4 +69,4 @@ Grrrl plan and its dated qualification report for this repository's state.
 
 ## Catalog design
 
-The owner selected **A — Cut & Paste** from the [inspiration studies](docs/design/catalog-previews.md). The interface now displays real catalog metadata and local cover scans in the selected layout, with existing search, reading, downloads and rights information. The comparison prototypes are removed. This repository change is separate from deployment.
+The owner selected **A — Cut & Paste** from the [inspiration studies](docs/design/catalog-previews.md). The interface now displays real catalog metadata and local cover scans in the selected layout, with existing search, reading, downloads and rights information. The comparison prototypes are removed. The selected frontend is deployed to the private Almaz service; all 23 PDFs passed download/hash/render checks against it. Public release remains a separate owner decision.
