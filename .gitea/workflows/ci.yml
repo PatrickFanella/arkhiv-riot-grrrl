@@ -17,7 +17,9 @@ jobs:
         with:
           node-version: '24'
       - name: Install pinned pnpm
-        run: npm install --global pnpm@10.33.0 --force
+        run: |
+          npm install --global --prefix "$RUNNER_TEMP/arkhiv-pnpm" pnpm@10.33.0
+          echo "$RUNNER_TEMP/arkhiv-pnpm/bin" >> "$GITHUB_PATH"
       - name: Verify
         run: make verify
       - name: Isolated browser and PostgreSQL 17 smoke
