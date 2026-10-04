@@ -18,7 +18,7 @@
     "pdfjs-dist": "5.4.624",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "@subcult/archive-viewer": "0.2.1"
+    "@subcult/archive-viewer": "0.2.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

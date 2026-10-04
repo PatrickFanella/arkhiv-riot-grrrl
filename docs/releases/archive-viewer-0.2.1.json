@@ -27,12 +27,12 @@
     "./print",
     "./audio"
   ],
-  "source_revision": "04eb1f80a0e5d5bc92f83c0030204cafee131d96",
-  "version": "0.2.1",
+  "source_revision": "17565d01903c019ba6610943ce5f1ac90910e93b",
+  "version": "0.2.2",
   "license": "GPL-3.0-only",
-  "package_sha256": "3f3aa52377c6a178ca52f715928339c09608c4b7d1e5bc11969b76ce57ffe8e9",
-  "package_file": "subcult-archive-viewer-0.2.1.tgz",
-  "engine_digest": "git.subcult.tv/subculture-collective/archive-engine@sha256:46e70741963799487890bffb78214006643cea1b2458c6648be47f58dd69278b",
+  "package_sha256": "3f192e7c3da5dd357325885de891035502dbe83cdcfc96df9b90d56fbc7ad920",
+  "package_file": "subcult-archive-viewer-0.2.2.tgz",
+  "engine_digest": "git.subcult.tv/subculture-collective/archive-engine@sha256:33293d5fa8e5cc13122b7b3b1e3aae81712b81a5024c4594ab53911f654cee21",
   "migrations": {
     "0001_metadata.sql": "a4db4802a66764c56b3a77c128b27e608b1f3a5767f3482464700b9bbe744537",
     "0002_local_preservation.sql": "cbe2dda6e3a5b20db392bf63269faaaa08f6f44550ea7f0831b229eba9b7a3e2",

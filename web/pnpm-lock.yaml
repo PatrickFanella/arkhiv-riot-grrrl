@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@subcult/archive-viewer':
-        specifier: 0.2.1
-        version: 0.2.1(react@19.2.6)
+        specifier: 0.2.2
+        version: 0.2.2(react@19.2.6)
       pdfjs-dist:
         specifier: 5.4.624
         version: 5.4.624
@@ -597,8 +597,8 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@subcult/archive-viewer@0.2.1':
-    resolution: {integrity: sha512-ZThiISc6vns/2qJ/sOQkZulv2sGd/RzOevzlvRKt69s83gTnBaBn8+7jZuUlJwiaCgwNne+y8gT2Lgmgp1XQNw==, tarball: https://git.subcult.tv/api/packages/subculture-collective/npm/%40subcult%2Farchive-viewer/-/0.2.1/archive-viewer-0.2.1.tgz}
+  '@subcult/archive-viewer@0.2.2':
+    resolution: {integrity: sha512-n+9S7ta0lyPKLjvQIEOV/TWKEsM782SNFnwNz8gs/a8itRz4aSmLk1hilHYmV/Q4/suJ0BGss8LiP691aYd4Aw==, tarball: https://git.subcult.tv/api/packages/subculture-collective/npm/%40subcult%2Farchive-viewer/-/0.2.2/archive-viewer-0.2.2.tgz}
     peerDependencies:
       react: ^19.2.0
 
@@ -1923,7 +1923,7 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@subcult/archive-viewer@0.2.1(react@19.2.6)':
+  '@subcult/archive-viewer@0.2.2(react@19.2.6)':
     dependencies:
       react: 19.2.6
 
