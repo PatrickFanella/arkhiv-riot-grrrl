@@ -5,7 +5,7 @@ import type { PrintBackend } from '@subcult/archive-viewer/print';
 GlobalWorkerOptions.workerSrc = worker;
 export const pdfBackend: PrintBackend = {
   open(url) {
-    const task = getDocument({url,isEvalSupported:false,enableXfa:false,cMapUrl:'/pdfjs/cmaps/',cMapPacked:true,standardFontDataUrl:'/pdfjs/standard_fonts/',wasmUrl:'/pdfjs/wasm/'});
+    const task = getDocument({url,canvasMaxAreaInBytes:32*1024*1024,isEvalSupported:false,enableXfa:false,cMapUrl:'/pdfjs/cmaps/',cMapPacked:true,standardFontDataUrl:'/pdfjs/standard_fonts/',wasmUrl:'/pdfjs/wasm/'});
     return {destroy: () => task.destroy(),promise: task.promise.then(pdf => ({
       numPages:pdf.numPages,
       async page(number) {
