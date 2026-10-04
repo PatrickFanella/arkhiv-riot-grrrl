@@ -62,8 +62,7 @@ The public site is [riot-grrrl.subcult.tv](https://riot-grrrl.subcult.tv/). Its
 23 PDFs, without asserting a reuse license. It uses a separate restored database,
 read-only serving role and archive mount. The original private pilot remains
 separate. See the [public rollout report](docs/reports/riot-grrrl-public-rollout-20261004.md)
-for actual HTTP, reader and deployment evidence. Fresh public recovery
-qualification remains in progress.
+for actual HTTP, reader and deployment evidence. Fresh public recovery passed all 17 table counts and all 23 PDF hashes.
 
 Earlier plans and dated reports under `docs/` describe the upstream Arkhiv
 project. They are retained as implementation history, not evidence that this

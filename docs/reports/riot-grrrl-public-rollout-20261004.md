@@ -33,11 +33,16 @@ checks are retained. Foreign Anarchist documents return 404.
 The actual public Violet volume 4 reader painted page 2 at 864 by 1,152 pixels
 without an alert. Required isolated `make verify` passed against `a8d16ff`.
 These checks prove the observed reader and download behavior; a sustained public
-observation window and the fresh public database restore remain separate gates.
+observation window remains a separate gate.
 
 Runtime receipts are under
 `/mnt/spektr/server/data/arkhiv-platform-20261004/qualification` on Almaz.
-A fresh metadata checkpoint, independent restore and recurring monitoring are
-being qualified with the rest of the public deployment. Retain the old private
+The fresh public checkpoint `public-20261004T084653Z` reached NUC and was restored
+independently on Kuznya. Every one of the 17 Riot Grrrl table counts matched,
+including 23 public access events. The exact public backend served all 23
+restored PDFs with matching byte sizes and SHA-256 hashes, using a SELECT-only
+role and read-only archive. Recurring public monitoring is enabled and passed
+its first natural timer activation. Bounded daily backup is enabled; its first
+manual copy passed, and its next daily activation remains unobserved. Retain the old private
 artifacts for private recovery; qualify public access behavior before using a
 historical artifact as a public rollback target.

@@ -68,4 +68,4 @@ restored database and archive copy. Source rights remain unknown. All public
 PDF downloads match their recorded sizes and hashes; the actual HTTPS reader
 paints pages without an alert. The retained private pilot is unchanged.
 [Public rollout evidence](../reports/riot-grrrl-public-rollout-20261004.md) records
-the large-PDF streaming fix and remaining fresh public recovery qualification.
+the large-PDF streaming fix and passed fresh independent public recovery.
