@@ -1,6 +1,6 @@
 FROM node:24-alpine AS build
 WORKDIR /src
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml .npmrc ./
 RUN corepack enable && pnpm install --frozen-lockfile
 COPY . ./
 ARG VITE_PUBLIC_URL=

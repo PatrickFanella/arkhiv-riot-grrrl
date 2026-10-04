@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/playwright:v1.56.1-noble
 WORKDIR /tests
 RUN npm install -g pnpm@10.33.0
-COPY web/package.json web/pnpm-lock.yaml ./
+COPY web/package.json web/pnpm-lock.yaml web/.npmrc ./
 RUN pnpm install --frozen-lockfile
 COPY web/playwright.config.ts ./
 COPY web/tests/ ./tests/
