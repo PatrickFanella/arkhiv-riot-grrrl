@@ -68,3 +68,9 @@ test-updates: ## Complete source inventory and durable refresh integration check
 .PHONY: test-restore-browser
 test-restore-browser: ## Scheduled reader probe against an isolated synthetic stack
 	bash scripts/test-reader-probe.sh
+
+.PHONY: verify-core-pin
+verify: verify-core-pin
+verify-core-pin: ## Verify the independent Arkhiv engine receipt and deployment recipe
+	python3 scripts/check_core_pin.py
+	COLLECTION=isolated-proof ARCHIVE_ROOT=/tmp/arkhiv-proof DERIVATIVE_ROOT=/tmp/arkhiv-derivatives IMPORT_ROOT=/tmp/arkhiv-import SECRET_ROOT=/tmp/arkhiv-secrets docker compose --env-file deploy/archive-core.env -f deploy/core-compose.yml config --quiet

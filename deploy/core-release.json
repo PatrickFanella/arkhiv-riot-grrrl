@@ -1,0 +1,40 @@
+{
+  "contract_version": 1,
+  "artifact_kind": "core",
+  "configuration_version": 1,
+  "api_versions": [
+    "1"
+  ],
+  "media": [
+    "print",
+    "audio",
+    "video"
+  ],
+  "modules": {
+    "catalog": "1",
+    "print": "1",
+    "audio": "1",
+    "video": "1"
+  },
+  "engine_repository": "git.subcult.tv/subculture-collective/archive-core",
+  "schema_strategy": "checksum-locked-additive-migrations",
+  "compatibility_window": "current and previous reviewed release",
+  "rollout": "reviewed-per-consumer",
+  "version": "0.1.2",
+  "engine_digest": "git.subcult.tv/subculture-collective/archive-core@sha256:43505f2a286863f47a5ad9f9d5c57726d7ac955b3c0ba48f598d7a3fff148962",
+  "source_revision": "c734248786a78cf777cacb895cde384c52f313f4",
+  "migrations": {
+    "0001_metadata.sql": "a4db4802a66764c56b3a77c128b27e608b1f3a5767f3482464700b9bbe744537",
+    "0002_local_preservation.sql": "cbe2dda6e3a5b20db392bf63269faaaa08f6f44550ea7f0831b229eba9b7a3e2",
+    "0003_file_based_sources.sql": "48f2cc4d492a10512fb5644365a26cce856e87f1328dbedfa7a943064faf3043",
+    "0004_budget_reviews.sql": "0904c5f0a2fb8367dc21128e31e1e86fa1371593d76aa674f4cb43161f13acb9",
+    "0005_mixed_catalog.sql": "e8453b33e9f3cf0a699e9a3ae2e93d0b735ad7447140c420a0a0c5d8c1c137d5",
+    "0006_representation_access.sql": "28319c6c1496c68cad0841ec1101eda3aab867623a81d206748f7124e72112e2",
+    "0007_print_index.sql": "0c1862e537f6973df263e21d9a36ec39a7014016418d8a111232ef831b452aaf",
+    "0008_audio_assets.sql": "867623113670cc52185c5ad0a470b2c387365212601243e97cf564df8ca307fc",
+    "0009_public_reviews.sql": "50671a0c6d75ff914290682c62df1f43e50a45ee616bb36ac2386fa94245d04b",
+    "0010_curation_drafts.sql": "c2b3a5f398eeb1286ca912f4f86c15154a47a238aa93d225414df1da8e6c41f3",
+    "0011_retained_inventory.sql": "46eb1e7de42617d6067c6c1d63ca66ea04b2088c387b09aeed96dd5c31807abf",
+    "0012_retained_print_indexes.sql": "afbe6d0655f2844897d692803c13ec6f3bf64dd8f2bf1d47de1eea5c5a812965"
+  }
+}
