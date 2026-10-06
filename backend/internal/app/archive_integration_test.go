@@ -412,6 +412,77 @@ func TestArchiveIntegration(t *testing.T) {
 	if e = recovery.Backup(ctx, db, store, sourceURL, backup); e != nil {
 		t.Fatal(e)
 	}
+	if err := filepath.WalkDir(backup, func(path string, entry os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() {
+			return nil
+		}
+		return os.Chmod(path, 0400)
+	}); err != nil {
+		t.Fatal(err)
+	}
+	// Restore a real PostgreSQL dump from a deduplicated snapshot, while keeping
+	// the earlier immutable snapshot and rejecting a bounded partial dump.
+	var sourceBytes int64
+	if err := filepath.WalkDir(store.Path, func(path string, entry os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() || path == filepath.Join(store.Path, ".writer.lock") {
+			return nil
+		}
+		info, err := entry.Info()
+		if err != nil {
+			return err
+		}
+		sourceBytes += info.Size()
+		return nil
+	}); err != nil {
+		t.Fatal(err)
+	}
+	partial := filepath.Join(t.TempDir(), "bounded-failure")
+	if err := recovery.Backup(ctx, db, store, sourceURL, partial, recovery.BackupOptions{Basis: backup, MaximumBytes: sourceBytes + 1}); err == nil {
+		t.Fatal("accepted an over-budget catalog dump")
+	}
+	if _, err := os.Stat(filepath.Join(partial, "complete.json")); !os.IsNotExist(err) {
+		t.Fatal("partial backup became complete", err)
+	}
+	if info, err := os.Stat(filepath.Join(partial, "catalog.dump")); err != nil || info.Size() > 1 {
+		t.Fatal("catalog dump exceeded its budget", err)
+	}
+	deduplicated := filepath.Join(t.TempDir(), "deduplicated")
+	if err := recovery.Backup(ctx, db, store, sourceURL, deduplicated, recovery.BackupOptions{Basis: backup, MaximumBytes: sourceBytes + 64<<20}); err != nil {
+		t.Fatal(err)
+	}
+	if err := filepath.WalkDir(filepath.Join(backup, "archive"), func(path string, entry os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() {
+			return nil
+		}
+		relative, err := filepath.Rel(filepath.Join(backup, "archive"), path)
+		if err != nil {
+			return err
+		}
+		first, err := os.Stat(path)
+		if err != nil {
+			return err
+		}
+		second, err := os.Stat(filepath.Join(deduplicated, "archive", relative))
+		if err != nil {
+			return err
+		}
+		if !os.SameFile(first, second) {
+			t.Fatal("unchanged preserved file was recopied", relative)
+		}
+		return nil
+	}); err != nil {
+		t.Fatal(err)
+	}
+	backup = deduplicated
 	restoredURL := create("restore")
 	destination := filepath.Join(t.TempDir(), "restored")
 	if e = recovery.Restore(ctx, restoredURL, backup, destination); e != nil {

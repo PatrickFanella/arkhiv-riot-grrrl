@@ -78,3 +78,7 @@ page sharing, and reading focus with Escape. Full source dates support bounds;
 partial and unknown dates remain visible when bounds are absent. Editorial date
 corrections do not replace the original source date. Existing covers, PDF text,
 search, downloads, rights and product-owned layout remain available.
+
+## Bounded backup follow-up
+
+The opt-in [bounded backup mode](../runbooks/bounded-backups.md) retains complete snapshots and shares verified read-only files between backups. Explicit snapshot/staging/independent-store caps refuse unsafe growth without pruning evidence. Source qualification and live capacity/restore requirements are tracked in Anarchist Archive #56; live jobs retain their existing behavior until reviewed activation.
