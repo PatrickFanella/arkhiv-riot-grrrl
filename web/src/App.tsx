@@ -1,6 +1,15 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import Catalog from "./Catalog";
-const publicURL = import.meta.env.VITE_PUBLIC_URL || globalThis.location?.origin || "http://localhost";
+import {
+  FavoriteButton,
+  FavoriteShelf,
+  ShareControls,
+  useBrowserFavorites,
+} from "./Preferences";
+const publicURL =
+  import.meta.env.VITE_PUBLIC_URL ||
+  globalThis.location?.origin ||
+  "http://localhost";
 const contact = import.meta.env.VITE_CORRECTION_CONTACT || "info@subcult.tv";
 const Reader = lazy(() => import("./Reader"));
 export interface Variant {
@@ -16,6 +25,7 @@ export interface DocumentRecord {
   id: string;
   collection: string;
   source_item: string;
+  original_date?: string;
   metadata: {
     title: string;
     creator?: string;
@@ -49,6 +59,25 @@ async function json<T>(url: string, signal: AbortSignal): Promise<T> {
     );
   return r.json();
 }
+export const originalDate = (doc: DocumentRecord) =>
+  (doc.original_date === undefined ? doc.metadata.date : doc.original_date) ||
+  "Date unknown";
+const favoriteDocument = async (
+  id: string,
+  signal: AbortSignal,
+  scope: string,
+) => {
+  const doc = await json<DocumentRecord>(
+    `/api/documents/${encodeURIComponent(id)}`,
+    signal,
+  );
+  if (doc.collection !== scope)
+    throw new Error("Favorite is unavailable in this collection");
+  return {
+    title: doc.metadata.title,
+    href: `/documents/${encodeURIComponent(id)}?collection=${encodeURIComponent(doc.collection)}`,
+  };
+};
 export default function App() {
   const params = new URLSearchParams(location.search);
   const id = location.pathname.startsWith("/documents/")
@@ -60,9 +89,18 @@ export default function App() {
   const [subjects, setSubjects] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [focus, setFocus] = useState(false);
   const [collectionID, setCollectionID] = useState(
     params.get("collection") || "",
   );
+  const favorites = useBrowserFavorites(collectionID);
+  useEffect(() => {
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setFocus(false);
+    };
+    window.addEventListener("keydown", escape);
+    return () => window.removeEventListener("keydown", escape);
+  }, []);
   useEffect(() => {
     const controller = new AbortController();
     let active = true;
@@ -127,9 +165,22 @@ export default function App() {
     doc?.variants[0];
   useEffect(() => {
     document.title = `${doc?.metadata.title || collection?.name || "Riot Grrrl zines"} · Riot Grrrl Archive`;
-    let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.append(canonical); }
-    canonical.href = new URL(id ? `/documents/${id}` : collectionID ? `/?collection=${encodeURIComponent(collectionID)}` : "/", publicURL).href;
+    let canonical = document.querySelector<HTMLLinkElement>(
+      'link[rel="canonical"]',
+    );
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.append(canonical);
+    }
+    canonical.href = new URL(
+      id
+        ? `/documents/${id}`
+        : collectionID
+          ? `/?collection=${encodeURIComponent(collectionID)}`
+          : "/",
+      publicURL,
+    ).href;
   }, [doc, collection, collectionID, id]);
   const offsetLink = (n: number) => {
     const q = new URLSearchParams(location.search);
@@ -139,6 +190,7 @@ export default function App() {
   };
   return (
     <main
+      className={focus ? "reading-focus" : ""}
       style={
         { "--accent": collection?.accent || "#9b1459" } as React.CSSProperties
       }
@@ -191,15 +243,50 @@ export default function App() {
               </a>
               <p className="eyebrow">{collection?.name}</p>
               <h1>{doc.metadata.title}</h1>
+              <FavoriteButton
+                id={doc.id}
+                title={doc.metadata.title}
+                favorites={favorites}
+              />
+              <ShareControls url={() => location.href} title={doc.metadata.title} />
+              {params.get("read") === "1" && (
+                <button aria-pressed={focus} onClick={() => setFocus(!focus)}>
+                  {focus ? "Exit reading focus" : "Reading focus"}
+                </button>
+              )}
               <p className="description">
                 {doc.metadata.creator || "Creator unknown"} ·{" "}
-                {doc.metadata.date || "Date unknown"}
+                {originalDate(doc)}
               </p>
               <p>{doc.metadata.subjects?.join(" · ")}</p>
               <p>Language: {doc.metadata.language || "Unknown"}</p>
               <aside className="access-policy" aria-label="Access and rights">
-                <p><strong>Rights: {doc.rights === "unknown" ? "Unknown" : doc.rights}.</strong> {doc.variants.some((v) => v.public_approved) ? "Public reading and downloads are approved for archival access." : "This record is available in the private archive; public access has not been approved."} No reuse license is asserted.</p>
-                <p>Source: <a href={`https://archive.org/details/${encodeURIComponent(doc.source_item)}`} rel="noreferrer" target="_blank">Internet Archive · {doc.source_item}</a>. <a href={`mailto:${contact}?subject=${encodeURIComponent(`Riot Grrrl Archive correction or removal: ${doc.metadata.title}`)}&body=${encodeURIComponent(`Document: ${new URL(`/documents/${doc.id}`, publicURL).href}\n\nRequest and supporting information:\n`)}`}>Request a correction or removal</a>.</p>
+                <p>
+                  <strong>
+                    Rights: {doc.rights === "unknown" ? "Unknown" : doc.rights}.
+                  </strong>{" "}
+                  {doc.variants.some((v) => v.public_approved)
+                    ? "Public reading and downloads are approved for archival access."
+                    : "This record is available in the private archive; public access has not been approved."}{" "}
+                  No reuse license is asserted.
+                </p>
+                <p>
+                  Source:{" "}
+                  <a
+                    href={`https://archive.org/details/${encodeURIComponent(doc.source_item)}`}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Internet Archive · {doc.source_item}
+                  </a>
+                  .{" "}
+                  <a
+                    href={`mailto:${contact}?subject=${encodeURIComponent(`Riot Grrrl Archive correction or removal: ${doc.metadata.title}`)}&body=${encodeURIComponent(`Document: ${new URL(`/documents/${doc.id}`, publicURL).href}\n\nRequest and supporting information:\n`)}`}
+                  >
+                    Request a correction or removal
+                  </a>
+                  .
+                </p>
               </aside>
               <div className="variants">
                 {doc.variants.map((v) => (
@@ -256,15 +343,45 @@ export default function App() {
               </details>
             </section>
           ) : (
-            <Catalog collection={collection} collectionID={collectionID} listing={listing} subjects={subjects} params={params} offsetLink={offsetLink} />
+            <Catalog
+              collection={collection}
+              collectionID={collectionID}
+              listing={listing}
+              subjects={subjects}
+              params={params}
+              offsetLink={offsetLink}
+              favorites={favorites}
+            />
           )}
         </>
       )}
+      {collectionID && (
+        <FavoriteShelf
+          favorites={favorites}
+          scope={collectionID}
+          resolve={favoriteDocument}
+        />
+      )}
       <section className="about" id="about" aria-labelledby="about-title">
         <h2 id="about-title">About this archive</h2>
-        <p>The Riot Grrrl Archive preserves feminist punk zines and serves original PDFs in a local reader. Catalog metadata and available document text are searchable. Source links identify the Internet Archive item each file came from.</p>
-        <p>Public access is reviewed for each PDF variant. Availability here does not grant permission to reuse a document. Rights remain unknown unless stated, and This archive asserts no reuse license. Newly acquired editions remain private until reviewed.</p>
-        <p>For corrections or removal requests, contact <a href={`mailto:${contact}`}>{contact}</a> with the document link and details of your request. Access can be withdrawn while preservation and decision records remain in the private archive.</p>
+        <p>
+          The Riot Grrrl Archive preserves feminist punk zines and serves
+          original PDFs in a local reader. Catalog metadata and available
+          document text are searchable. Source links identify the Internet
+          Archive item each file came from.
+        </p>
+        <p>
+          Public access is reviewed for each PDF variant. Availability here does
+          not grant permission to reuse a document. Rights remain unknown unless
+          stated, and This archive asserts no reuse license. Newly acquired
+          editions remain private until reviewed.
+        </p>
+        <p>
+          For corrections or removal requests, contact{" "}
+          <a href={`mailto:${contact}`}>{contact}</a> with the document link and
+          details of your request. Access can be withdrawn while preservation
+          and decision records remain in the private archive.
+        </p>
       </section>
       <footer>
         <span>Riot Grrrl Archive · Preserved with Arkhiv</span>

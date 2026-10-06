@@ -54,7 +54,12 @@ func ArchiveHandler(db *catalog.DB, store *storage.Store) http.Handler {
 			fail(w, 400, "query exceeds bounds")
 			return
 		}
-		docs, total, e := db.List(r.Context(), q.Get("collection"), q.Get("q"), q.Get("subject"), q.Get("language"), limit, offset, true)
+		filters := catalog.BrowseFilters{Creator: q.Get("creator"), DateFrom: q.Get("date_from"), DateTo: q.Get("date_to")}
+		if err := filters.Validate(); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+		docs, total, e := db.List(r.Context(), q.Get("collection"), q.Get("q"), q.Get("subject"), q.Get("language"), limit, offset, true, filters)
 		if e != nil {
 			fail(w, 503, "catalog unavailable")
 			return

@@ -162,16 +162,17 @@ type Variant struct {
 	TextStatus     string `json:"text_status"`
 }
 type Document struct {
-	ID         string         `json:"id"`
-	Collection string         `json:"collection"`
-	Item       string         `json:"source_item"`
-	Key        string         `json:"key"`
-	Metadata   map[string]any `json:"metadata"`
-	Published  bool           `json:"published"`
-	Rights     string         `json:"rights"`
-	Review     string         `json:"review,omitempty"`
-	Variants   []Variant      `json:"variants"`
-	Hits       []Hit          `json:"hits"`
+	ID           string         `json:"id"`
+	Collection   string         `json:"collection"`
+	Item         string         `json:"source_item"`
+	Key          string         `json:"key"`
+	Metadata     map[string]any `json:"metadata"`
+	OriginalDate string         `json:"original_date"`
+	Published    bool           `json:"published"`
+	Rights       string         `json:"rights"`
+	Review       string         `json:"review,omitempty"`
+	Variants     []Variant      `json:"variants"`
+	Hits         []Hit          `json:"hits"`
 }
 type Hit struct {
 	Page    int    `json:"page"`
@@ -182,7 +183,7 @@ type Hit struct {
 func (d *DB) Get(ctx context.Context, id string, public bool) (Document, error) {
 	var doc Document
 	var b []byte
-	e := d.Pool.QueryRow(ctx, `SELECT id,collection_id,source_item,source_key,metadata||overrides,published,rights,review_note FROM documents WHERE id=$1 AND (NOT $2 OR published) AND (NOT $3 OR (published AND EXISTS(SELECT 1 FROM variants WHERE document_id=documents.id AND public_approved)))`, id, public, d.PublicOnly).Scan(&doc.ID, &doc.Collection, &doc.Item, &doc.Key, &b, &doc.Published, &doc.Rights, &doc.Review)
+	e := d.Pool.QueryRow(ctx, `SELECT id,collection_id,source_item,source_key,metadata||overrides,CASE WHEN jsonb_typeof(metadata->'date')='string' THEN metadata->>'date' ELSE '' END,published,rights,review_note FROM documents WHERE id=$1 AND (NOT $2 OR published) AND (NOT $3 OR (published AND EXISTS(SELECT 1 FROM variants WHERE document_id=documents.id AND public_approved)))`, id, public, d.PublicOnly).Scan(&doc.ID, &doc.Collection, &doc.Item, &doc.Key, &b, &doc.OriginalDate, &doc.Published, &doc.Rights, &doc.Review)
 	if e != nil {
 		return doc, e
 	}
@@ -264,14 +265,22 @@ func (d *DB) Edit(ctx context.Context, id string, overrides map[string]any, righ
 	}
 	return tx.Commit(ctx)
 }
-func (d *DB) List(ctx context.Context, c, q, subject, language string, limit, offset int, public bool) ([]Document, int, error) {
+func (d *DB) List(ctx context.Context, c, q, subject, language string, limit, offset int, public bool, filters ...BrowseFilters) ([]Document, int, error) {
+	var filter BrowseFilters
+	if len(filters) > 0 {
+		filter = filters[0]
+	}
+	if err := filter.Validate(); err != nil {
+		return nil, 0, err
+	}
 	const where = `FROM documents d WHERE ($1='' OR collection_id=$1) AND (NOT $2 OR published) AND (NOT $6 OR (published AND EXISTS(SELECT 1 FROM variants WHERE document_id=d.id AND public_approved))) AND ($3='' OR to_tsvector('simple',(CASE WHEN $6 THEN jsonb_build_object('title',(metadata||overrides)->'title','creator',(metadata||overrides)->'creator','date',(metadata||overrides)->'date','language',(metadata||overrides)->'language','subjects',(metadata||overrides)->'subjects') ELSE metadata||overrides END)::text) @@ plainto_tsquery('simple',$3) OR EXISTS(SELECT 1 FROM variants v JOIN page_text t ON t.asset_sha=v.asset_sha WHERE v.document_id=d.id AND (NOT $6 OR v.public_approved) AND t.search @@ plainto_tsquery('simple',$3))) AND ($4='' OR (metadata||overrides)->'subjects' ? $4) AND ($5='' OR (metadata||overrides)->>'language'=$5)`
-	args := []any{c, public, q, subject, language, d.PublicOnly}
+	const additional = ` AND ($7='' OR position(lower($7) in lower(COALESCE((metadata||overrides)->>'creator','')))>0) AND ($8='' OR (metadata->>'date' ~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' AND metadata->>'date'>=$8)) AND ($9='' OR (metadata->>'date' ~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' AND metadata->>'date'<=$9))`
+	args := []any{c, public, q, subject, language, d.PublicOnly, filter.Creator, filter.DateFrom, filter.DateTo}
 	var total int
-	if e := d.Pool.QueryRow(ctx, `SELECT count(*) `+where, args...).Scan(&total); e != nil {
+	if e := d.Pool.QueryRow(ctx, `SELECT count(*) `+where+additional, args...).Scan(&total); e != nil {
 		return nil, 0, e
 	}
-	rows, e := d.Pool.Query(ctx, `SELECT id `+where+` ORDER BY lower(COALESCE((metadata||overrides)->>'title','')),id LIMIT $7 OFFSET $8`, append(args, limit, offset)...)
+	rows, e := d.Pool.Query(ctx, `SELECT id `+where+additional+` ORDER BY lower(COALESCE((metadata||overrides)->>'title','')),id LIMIT $10 OFFSET $11`, append(args, limit, offset)...)
 	if e != nil {
 		return nil, 0, e
 	}

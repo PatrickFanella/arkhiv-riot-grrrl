@@ -77,3 +77,14 @@ is now live on the public hostname.
 The original frontend remains in this repository. A versioned headless Arkhiv
 engine can serve it through the [shared-core release runbook](docs/runbooks/shared-core-release.md),
 with an immutable pin and independently verified upgrades.
+
+## Viewer feedback, October 6
+
+The product independently pins shared viewer 0.4.0. Its native backend and core
+pins remain independent. Browser favorites are scoped to this product or selected
+collection and retain removable unavailable references. Sharing has a selectable
+copy fallback and social compose links. Optional account activation requires a
+verified native-to-canonical identity mapping and a separate provider decision.
+No acquisition, approval or deployment changes are included.
+
+The [viewer qualification report](docs/reports/viewer-feedback-2026-10-06.md) records local verification and browser evidence.
