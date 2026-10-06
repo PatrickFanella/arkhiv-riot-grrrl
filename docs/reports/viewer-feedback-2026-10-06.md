@@ -15,3 +15,5 @@ The owned preview at loopback port 33847 used synthetic collections and original
 A same-origin 390 CSS-pixel iframe in the native browser verified the narrow layout; this is desktop-browser responsive evidence, not physical-device evidence. The document width was 375 pixels, fit-width canvas 340 by 440, and text search found the page-2 phrase “Solidarity knownword appears on page two.” Original downloads returned HTTP 200 with attachment disposition and 895 bytes, SHA-256 `a5168c95e47d5ffdaae2d137f0280a5a2dde4f5888b6b8a487500fc8548d139f`. Rights, source references, preservation details and original downloads remained available.
 
 The synthetic preview is stopped with its development data retained. This report does not claim public activation, complete retained-corpus qualification, hosted CI, or account-provider activation.
+
+A follow-up at the committed PR head verified an actual missing-cover 404 exposes “Cover unavailable.” An unavailable saved reference remained listed; native Enter on its focused remove control deleted it. Denying browser-storage writes kept the page usable, updated the in-memory favorite state and displayed the temporary-storage notice.
