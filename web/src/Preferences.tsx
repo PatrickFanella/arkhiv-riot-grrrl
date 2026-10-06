@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 
 const memory = new Map<string, string[]>();
 const failedWrites = new Set<string>();
+const temporaryFavoritesNotice =
+  "Browser storage is unavailable. These favorites last while this page remains open.";
 export function useBrowserFavorites(scope: string) {
   const key = `archive.product-favorites.v1:${scope}`;
   const read = () => {
@@ -25,10 +27,12 @@ export function useBrowserFavorites(scope: string) {
     return memory.get(key) || [];
   };
   const [state, setState] = useState(() => ({ key, ids: read() })),
-    [notice, setNotice] = useState("");
+    [notice, setNotice] = useState(() =>
+      failedWrites.has(key) ? temporaryFavoritesNotice : "",
+    );
   useEffect(() => {
     setState({ key, ids: read() });
-    setNotice("");
+    setNotice(failedWrites.has(key) ? temporaryFavoritesNotice : "");
     const changed = (event: StorageEvent) => {
       if (event.key === key) setState({ key, ids: read() });
     };
@@ -57,9 +61,7 @@ export function useBrowserFavorites(scope: string) {
       setNotice("");
     } catch {
       failedWrites.add(key);
-      setNotice(
-        "Browser storage is unavailable. These favorites last while this page remains open.",
-      );
+      setNotice(temporaryFavoritesNotice);
     }
     const next = { key, ids };
     current.current = next;

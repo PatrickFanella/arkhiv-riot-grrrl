@@ -94,12 +94,23 @@ func Inspect(ctx context.Context, db *catalog.DB, s *storage.Store) (AuditResult
 	}
 	return result, rows.Err()
 }
-func copyTree(source, destination string) error {
+func copyTree(source, destination string, basis ...string) error {
 	root, e := os.OpenRoot(source)
 	if e != nil {
 		return e
 	}
 	defer root.Close()
+	var previous *os.Root
+	if len(basis) > 1 {
+		return fmt.Errorf("one backup basis required")
+	}
+	if len(basis) == 1 && basis[0] != "" {
+		previous, e = os.OpenRoot(basis[0])
+		if e != nil {
+			return e
+		}
+		defer previous.Close()
+	}
 	return fs.WalkDir(root.FS(), ".", func(path string, entry fs.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -126,6 +137,43 @@ func copyTree(source, destination string) error {
 			return e
 		}
 		defer in.Close()
+		if previous != nil {
+			prior, err := previous.Lstat(path)
+			if err != nil && !os.IsNotExist(err) {
+				return err
+			}
+			if err == nil && !prior.Mode().IsRegular() {
+				return fmt.Errorf("backup basis rejects nonregular file")
+			}
+			if err == nil && prior.Mode().Perm()&0222 != 0 {
+				return fmt.Errorf("backup basis file must be read-only")
+			}
+			if err == nil && prior.Size() == info.Size() {
+				inputHash, _, err := storage.Digest(in)
+				if err != nil {
+					return err
+				}
+				old, err := previous.Open(path)
+				if err != nil {
+					return err
+				}
+				oldHash, _, err := storage.Digest(old)
+				old.Close()
+				if err != nil {
+					return err
+				}
+				if inputHash == oldHash {
+					// Link a verified earlier snapshot, never the mutable source tree.
+					if err := os.Link(filepath.Join(basis[0], path), target); err != nil {
+						return fmt.Errorf("backup basis must share the destination filesystem: %w", err)
+					}
+					return nil
+				}
+				if _, err := in.Seek(0, io.SeekStart); err != nil {
+					return err
+				}
+			}
+		}
 		out, e := os.OpenFile(target, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
 		if e != nil {
 			return e
@@ -141,7 +189,7 @@ func copyTree(source, destination string) error {
 		return ce
 	})
 }
-func tool(ctx context.Context, name, path, urlValue string) error {
+func tool(ctx context.Context, name, path, urlValue string, maximumBytes ...int64) error {
 	cfg, e := pgx.ParseConfig(urlValue)
 	if e != nil {
 		return fmt.Errorf("invalid database configuration")
@@ -153,6 +201,17 @@ func tool(ctx context.Context, name, path, urlValue string) error {
 		args = []string{"--exit-on-error", "--single-transaction", "--dbname", cfg.Database, path}
 	}
 	cmd := exec.CommandContext(ctx, name, args...)
+	var dumpOutput *os.File
+	if name == "pg_dump" && len(maximumBytes) == 1 && maximumBytes[0] > 0 {
+		output, err := os.OpenFile(path, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+		if err != nil {
+			return err
+		}
+		defer output.Close()
+		dumpOutput = output
+		cmd = exec.CommandContext(ctx, name, "--format=custom")
+		cmd.Stdout = &boundedOutput{writer: output, remaining: maximumBytes[0]}
+	}
 	sslMode := "prefer"
 	parsed, parseErr := url.Parse(urlValue)
 	if parseErr != nil || (parsed.Scheme != "postgres" && parsed.Scheme != "postgresql") {
@@ -171,9 +230,32 @@ func tool(ctx context.Context, name, path, urlValue string) error {
 	if e := cmd.Run(); e != nil {
 		return fmt.Errorf("%s failed", name)
 	}
+	if dumpOutput != nil {
+		return dumpOutput.Sync()
+	}
 	return nil
 }
-func Backup(ctx context.Context, db *catalog.DB, s *storage.Store, url, destination string) error {
+
+type boundedOutput struct {
+	writer    io.Writer
+	remaining int64
+}
+
+func (w *boundedOutput) Write(p []byte) (int, error) {
+	if int64(len(p)) > w.remaining {
+		return 0, fmt.Errorf("backup byte budget reached")
+	}
+	n, err := w.writer.Write(p)
+	w.remaining -= int64(n)
+	return n, err
+}
+
+type BackupOptions struct {
+	Basis        string
+	MaximumBytes int64
+}
+
+func Backup(ctx context.Context, db *catalog.DB, s *storage.Store, url, destination string, options ...BackupOptions) error {
 	src, e := filepath.Abs(s.Path)
 	if e != nil {
 		return e
@@ -185,16 +267,66 @@ func Backup(ctx context.Context, db *catalog.DB, s *storage.Store, url, destinat
 	if dst == src || filepath.IsLocal(mustRelative(src, dst)) {
 		return fmt.Errorf("backup destination must be outside archive")
 	}
+	var previous []string
+	if len(options) > 1 {
+		return fmt.Errorf("one backup basis required")
+	}
+	var option BackupOptions
+	if len(options) == 1 {
+		option = options[0]
+	}
+	if option.MaximumBytes < 0 {
+		return fmt.Errorf("invalid backup byte budget")
+	}
+	if option.Basis != "" {
+		old, err := filepath.Abs(option.Basis)
+		if err != nil || old == src || filepath.IsLocal(mustRelative(src, old)) || old == dst {
+			return fmt.Errorf("backup basis must be a separate verified snapshot")
+		}
+		if err := verifyBasis(old); err != nil {
+			return err
+		}
+		previous = []string{filepath.Join(old, "archive")}
+	}
+	var sourceBytes int64
+	if err := filepath.WalkDir(src, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() {
+			return nil
+		}
+		info, err := entry.Info()
+		if err != nil {
+			return err
+		}
+		if !info.Mode().IsRegular() {
+			return fmt.Errorf("backup rejects nonregular source")
+		}
+		if path != filepath.Join(src, ".writer.lock") {
+			sourceBytes += info.Size()
+		}
+		return nil
+	}); err != nil {
+		return err
+	}
+	if option.MaximumBytes > 0 && sourceBytes >= option.MaximumBytes {
+		return fmt.Errorf("archive exceeds backup byte budget")
+	}
 	if e = Audit(ctx, db, s); e != nil {
 		return e
 	}
 	if e = os.Mkdir(dst, 0700); e != nil {
 		return e
 	}
-	if e = tool(ctx, "pg_dump", filepath.Join(dst, "catalog.dump"), url); e != nil {
+	var dumpLimit int64
+	if option.MaximumBytes > 0 {
+		dumpLimit = option.MaximumBytes - sourceBytes
+	}
+	if e = tool(ctx, "pg_dump", filepath.Join(dst, "catalog.dump"), url, dumpLimit); e != nil {
 		return e
 	}
-	if e = copyTree(src, filepath.Join(dst, "archive")); e != nil {
+	if e = copyTree(src, filepath.Join(dst, "archive"), previous...); e != nil {
 		return e
 	}
 	hash, n, e := digestFile(filepath.Join(dst, "catalog.dump"))
@@ -206,6 +338,44 @@ func Backup(ctx context.Context, db *catalog.DB, s *storage.Store, url, destinat
 		return e
 	}
 	return sWrite(filepath.Join(dst, "complete.json"), backupManifest{1, true, hash, n, files})
+}
+
+func verifyBasis(path string) error {
+	info, err := os.Lstat(path)
+	if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+		return fmt.Errorf("unsafe backup basis root")
+	}
+	root, err := os.OpenRoot(path)
+	if err != nil {
+		return err
+	}
+	defer root.Close()
+	info, err = root.Lstat("complete.json")
+	if err != nil || !info.Mode().IsRegular() || info.Size() > 16<<20 {
+		return fmt.Errorf("unsafe backup basis manifest")
+	}
+	raw, err := root.ReadFile("complete.json")
+	var manifest backupManifest
+	if err != nil || json.Unmarshal(raw, &manifest) != nil || manifest.Format != 1 || !manifest.Complete {
+		return fmt.Errorf("incomplete backup basis")
+	}
+	info, err = root.Lstat("catalog.dump")
+	if err != nil || !info.Mode().IsRegular() {
+		return fmt.Errorf("unsafe backup basis catalog")
+	}
+	info, err = root.Lstat("archive")
+	if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+		return fmt.Errorf("unsafe backup basis archive")
+	}
+	hash, size, err := digestFile(filepath.Join(path, "catalog.dump"))
+	if err != nil || hash != manifest.CatalogSHA || size != manifest.CatalogSize {
+		return fmt.Errorf("backup basis catalog mismatch")
+	}
+	files, err := treeDigests(filepath.Join(path, "archive"))
+	if err != nil || !reflect.DeepEqual(files, manifest.Files) {
+		return fmt.Errorf("backup basis archive mismatch")
+	}
+	return nil
 }
 func mustRelative(a, b string) string {
 	p, e := filepath.Rel(a, b)

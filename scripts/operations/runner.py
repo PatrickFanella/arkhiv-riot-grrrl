@@ -119,6 +119,63 @@ def retention_plan(root, policy, now=None):
     return {'keep': sorted(keep), 'hold': sorted(held), 'remove': [name for _, name in snapshots if name not in keep], 'dry_run': True}
 
 
+def allocation(root):
+    """Count physical allocation once per inode, including shared snapshots."""
+    root = Path(root)
+    if root.is_symlink() or not root.is_dir():
+        raise ValueError('unsafe allocation root')
+    seen, physical, logical, files = set(), 0, 0, 0
+    for path in [root, *root.rglob('*')]:
+        if path.is_symlink():
+            raise ValueError('symlink in managed staging')
+        stat = path.stat()
+        if not path.is_file() and not path.is_dir():
+            raise ValueError('special file in managed staging')
+        if path.is_file():
+            logical += stat.st_size
+            files += 1
+        identity = (stat.st_dev, stat.st_ino)
+        if identity not in seen:
+            physical += stat.st_blocks * 512
+            seen.add(identity)
+    return {'allocated_bytes': physical, 'logical_bytes': logical, 'files': files}
+
+
+def freeze_backup(root):
+    verify_backup(root)
+    root = Path(root)
+    paths = list(root.rglob('*'))
+    for path in paths:
+        if path.is_file():
+            path.chmod(0o400)
+    for path in sorted([root, *(p for p in paths if p.is_dir())], key=lambda p: len(p.parts), reverse=True):
+        path.chmod(0o500)
+
+
+def verified_basis(root):
+    root = Path(root)
+    if root.is_symlink() or not root.is_dir():
+        raise ValueError('unsafe snapshot store')
+    for candidate in sorted(root.iterdir(), reverse=True):
+        if re.fullmatch(r'auto-\d{8}T\d{6}Z', candidate.name) and candidate.is_dir() and not candidate.is_symlink():
+            verify_backup(candidate)
+            for path in candidate.rglob("*"):
+                if path.is_file() and path.stat().st_mode & 0o222:
+                    raise ValueError("backup basis files must be read-only")
+            return str(candidate)
+    return ''
+
+
+def transfer_summary(output):
+    result = {}
+    for label, key in [('Number of regular files transferred', 'transferred_files'), ('Total transferred file size', 'transferred_bytes')]:
+        value = re.search(r'^' + re.escape(label) + r': ([0-9,]+)', output, re.MULTILINE)
+        if not value:
+            raise ValueError('missing transfer statistics')
+        result[key] = int(value.group(1).replace(',', ''))
+    return result
+
+
 class Runner:
     def __init__(self, config, execute=None):
         self.c = config
@@ -191,22 +248,66 @@ class Runner:
         return {'originals': 'verified', 'free_bytes': self.space(self.c['archive']), **summary}
 
     def backup(self):
-        self.space(self.c['staging'])
+        deduplicate = self.c.get('deduplicate_backup', False)
+        if not isinstance(deduplicate, bool):
+            raise ValueError('deduplicate_backup must be boolean')
+        reserve = self.c.get('minimum_free_bytes', 2 * 1024**3)
+        maximum = 0
+        local_basis = ''
+        if deduplicate:
+            for key in ('maximum_snapshot_bytes', 'maximum_staging_bytes', 'maximum_backup_bytes'):
+                if not isinstance(self.c.get(key), int) or isinstance(self.c[key], bool) or self.c[key] < 1:
+                    raise ValueError('explicit positive backup capacity bounds required')
+            maximum = self.c['maximum_snapshot_bytes'] + 16 * 1024**2
+            staged = allocation(self.c['staging'])
+            if staged['allocated_bytes'] + maximum > self.c['maximum_staging_bytes']:
+                raise RuntimeError('staging allocation limit would be exceeded; retained evidence is not pruned')
+            if self.space(self.c['staging']) < reserve + maximum:
+                raise RuntimeError('insufficient staging reserve for a complete new snapshot')
+            local_basis = verified_basis(self.c['staging'])
+        else:
+            self.space(self.c['staging'])
         remote_free = int(self.remote('python3', self.c['remote_script'], 'free', '--root', self.c['backup_root']).strip())
-        if remote_free < self.c.get('minimum_free_bytes', 2 * 1024**3):
+        if remote_free < reserve + maximum:
             raise RuntimeError('low backup capacity')
+        remote_basis = ''
+        before = {}
+        if deduplicate:
+            before = json.loads(self.remote('python3', self.c['remote_script'], 'allocation', '--root', self.c['backup_root']))
+            if before['allocated_bytes'] + maximum > self.c['maximum_backup_bytes']:
+                raise RuntimeError('independent allocation limit would be exceeded; retention stays dry-run')
+            remote_basis = json.loads(self.remote('python3', self.c['remote_script'], 'basis', '--root', self.c['backup_root']))['basis']
+            if remote_basis and (Path(remote_basis).parent != Path(self.c['backup_root']) or not re.fullmatch(r'auto-\d{8}T\d{6}Z', Path(remote_basis).name)):
+                raise ValueError('remote basis outside the reviewed snapshot store')
         name = 'auto-' + dt.datetime.now(dt.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
-        self.cli('backup', '--destination', '/backups/' + name)
+        arguments = ['backup', '--destination', '/backups/' + name]
+        if deduplicate:
+            arguments += ['--maximum-backup-bytes', str(self.c['maximum_snapshot_bytes'])]
+            if local_basis:
+                arguments += ['--basis', '/backups/' + Path(local_basis).name]
+        self.cli(*arguments)
         local = Path(self.c['staging']) / name
         summary = verify_backup(local)
+        if deduplicate:
+            freeze_backup(local)
         partial = self.c['backup_root'] + '/.incoming-' + name
         self.remote('mkdir', '-m', '700', partial)
-        self.execute(['rsync', '-a', '--protect-args', '--', str(local) + '/', self.c['backup_host'] + ':' + partial + '/'])
+        transfer = ['rsync', '-a', '--protect-args']
+        if deduplicate:
+            transfer += ['--checksum', '--stats']
+            if remote_basis:
+                transfer += ['--link-dest=' + remote_basis]
+        output = self.execute(['env', 'LC_ALL=C', *transfer, '--', str(local) + '/', self.c['backup_host'] + ':' + partial + '/'])
         self.remote('python3', self.c['remote_script'], 'verify', '--root', partial)
         final = self.c['backup_root'] + '/' + name
         self.remote('python3', self.c['remote_script'], 'promote', '--root', partial, '--destination', final)
+        result = {'snapshot': name, 'destination': final, 'verified_on_host': self.c['backup_host'], **summary}
+        if deduplicate:
+            self.remote('python3', self.c['remote_script'], 'freeze', '--root', final)
+            after = json.loads(self.remote('python3', self.c['remote_script'], 'allocation', '--root', self.c['backup_root']))
+            result.update(**transfer_summary(output), independent_new_allocated_bytes=after['allocated_bytes'] - before['allocated_bytes'], staging_allocation=allocation(self.c['staging']), local_basis=local_basis, remote_basis=remote_basis)
         atomic(self.state / 'latest-backup.json', {'name': name, 'destination': final, **summary})
-        return {'snapshot': name, 'destination': final, 'verified_on_host': self.c['backup_host'], **summary}
+        return result
 
     def update(self):
         results = {}
@@ -264,7 +365,7 @@ class Runner:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('action', choices=JOBS + ('verify', 'promote', 'retain', 'free'))
+    parser.add_argument('action', choices=JOBS + ('verify', 'promote', 'retain', 'free', 'basis', 'allocation', 'freeze'))
     parser.add_argument('--config')
     parser.add_argument('--root')
     parser.add_argument('--destination')
@@ -280,6 +381,13 @@ def main():
         result = {'complete': True}
     elif args.action == 'retain':
         result = retention_plan(args.root, json.loads(args.policy))
+    elif args.action == 'basis':
+        result = {'basis': verified_basis(args.root)}
+    elif args.action == 'allocation':
+        result = allocation(args.root)
+    elif args.action == 'freeze':
+        freeze_backup(args.root)
+        result = {'read_only': True}
     elif args.action == 'free':
         print(shutil.disk_usage(args.root).free)
         return 0

@@ -88,3 +88,7 @@ verified native-to-canonical identity mapping and a separate provider decision.
 No acquisition, approval or deployment changes are included.
 
 The [viewer qualification report](docs/reports/viewer-feedback-2026-10-06.md) records local verification and browser evidence.
+
+## Bounded backup follow-up
+
+The opt-in [bounded backup mode](docs/runbooks/bounded-backups.md) retains complete snapshots and shares verified read-only files between backups. Explicit snapshot/staging/independent-store caps refuse unsafe growth without pruning evidence. Source qualification and live capacity/restore requirements are tracked in Anarchist Archive #56; live jobs retain their existing behavior until reviewed activation.
