@@ -42,7 +42,8 @@ class RestoreSafetyTest(unittest.TestCase):
             role = next(i for i, args in enumerate(calls) if 'CREATE ROLE arkhiv_public NOLOGIN' in args)
             restore = next(i for i, args in enumerate(calls) if 'restore' in args)
             self.assertLess(role, restore)
-            self.assertEqual(calls[-1][-2:], ['down', '--volumes'])
+            self.assertEqual(next(args for args in calls if 'down' in args)[-3:], ['down', '--volumes', '--remove-orphans'])
+            self.assertEqual(calls[-1][:2], ['docker', 'ps'])
 
     def test_partial_stack_start_is_cleaned_without_touching_primary(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -57,8 +58,8 @@ class RestoreSafetyTest(unittest.TestCase):
             with patch.object(runner.Runner, 'remote', return_value=''), patch.object(runner.Runner, 'command', execute), patch.object(restore_drill, 'verify_backup', return_value={}):
                 with self.assertRaises(RuntimeError):
                     restore_drill.drill(config)
-            cleanup = calls[-1]
-            self.assertEqual(cleanup[-2:], ['down', '--volumes'])
+            cleanup = next(args for args in calls if 'down' in args)
+            self.assertEqual(cleanup[-3:], ['down', '--volumes', '--remove-orphans'])
             project = cleanup[cleanup.index('--project-name') + 1]
             self.assertTrue(project.startswith('riot-grrrl-drill-'))
             self.assertNotEqual(project, 'riot-grrrl-pilot')
@@ -66,6 +67,8 @@ class RestoreSafetyTest(unittest.TestCase):
             composed = json.loads(compose_path.read_text())
             self.assertTrue(composed['networks']['default']['internal'])
             self.assertNotIn('ports', composed['services']['db'])
+            self.assertTrue(composed['services']['operator']['init'])
+            self.assertEqual(calls[-1][-1], 'label=com.docker.compose.project=' + project)
 
 
 if __name__ == '__main__':
