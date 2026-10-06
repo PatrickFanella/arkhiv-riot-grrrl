@@ -52,6 +52,8 @@ func run(ctx context.Context, args []string) error {
 	patch := flags.String("metadata", "{}", "editorial override JSON")
 	destination := flags.String("destination", "", "new backup or restore path")
 	backup := flags.String("backup", "", "backup source")
+	basis := flags.String("basis", "", "verified previous backup for immutable snapshot deduplication")
+	maximumBackupBytes := flags.Int64("maximum-backup-bytes", 0, "optional total archive and catalog backup byte budget")
 	manifest := flags.String("manifest", "", "reviewed immutable public access manifest")
 	output := flags.String("output", "", "inventory/receipt output JSON")
 	if e := flags.Parse(args[1:]); e != nil {
@@ -307,7 +309,7 @@ func run(ctx context.Context, args []string) error {
 		if *destination == "" {
 			return errors.New("new backup destination required")
 		}
-		return recovery.Backup(ctx, db, s, url, *destination)
+		return recovery.Backup(ctx, db, s, url, *destination, recovery.BackupOptions{Basis: *basis, MaximumBytes: *maximumBackupBytes})
 	case "seed-fixture":
 		return fixtures.Seed(ctx, db, s)
 	default:
