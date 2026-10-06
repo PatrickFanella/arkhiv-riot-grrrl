@@ -28,3 +28,11 @@ The Anarchist full recovery experiment and Riot Grrrl continuation have not yet 
 The cleanup follow-up passed `make verify` from each native worktree using its isolated `arkhiv` profile on Sputnik. Both passed 24 operations tests, Go checks, two frontend tests, frozen-lock builds, Compose validation and engine/SDK receipt checks. Hosted CI remains owner-waived.
 
 Compose teardown has a 30-second sub-budget inside the 60-second cleanup deadline. A timeout leaves the remaining 30 seconds for exact-label lookup and force removal. The fourth cleanup regression verifies that split, and both full gates passed again.
+
+## Completed Riot Grrrl continuation
+
+The continuation completed on October 6. It restored the second Go CLI deduplicated snapshot into a fresh PostgreSQL 17 database and fresh archive. All 260 archive files passed manifest verification; catalog SHA-256 was `703163787993df23eca788c8bfa2c397ddb98f2c34605ced651bab933f5c89c4`, 887,403 bytes. Audit found 44 assets, 23 variants and 23 published documents. The retained first CLI backup and second deduplicated backup preserve the independent NUC ancestor and prior failed run.
+
+The actual restored reader checked all 23 published documents. All 23 download requests succeeded and all 23 PDFs painted in the browser probe. Source networking was blocked and the probe made zero source requests. This was desktop reader proof; the `narrow` result was false and no narrow-device result is claimed. The isolated operator image was `sha256:1fd09f9f1373bdfb5fcf8dcb4ecbb545f8f8b553d6540db512811bc581956720`, with retained frontend `riot-grrrl-web:d126446`.
+
+After successful teardown, an exact Compose-project-label lookup returned no containers. The prior failed attempt and partial restore remain retained. The continuation's 7,200-second qualification budget does not change the native 1,800-second configuration or erase the earlier timeout. Anarchist's larger full recovery remains in progress.
