@@ -1,5 +1,11 @@
 import { useState } from "react";
-import type { Collection, DocumentRecord, Listing } from "./App";
+import {
+  originalDate,
+  type Collection,
+  type DocumentRecord,
+  type Listing,
+} from "./App";
+import { FavoriteButton, type BrowserFavorites } from "./Preferences";
 
 function Cover({
   document: doc,
@@ -41,6 +47,7 @@ export default function Catalog({
   subjects,
   params,
   offsetLink,
+  favorites,
 }: {
   collection?: Collection;
   collectionID: string;
@@ -48,10 +55,17 @@ export default function Catalog({
   subjects: string[];
   params: URLSearchParams;
   offsetLink: (offset: number) => string;
+  favorites: BrowserFavorites;
 }) {
+  const [layout, setLayout] = useState<"grid" | "table">("grid");
   const riot = true;
   const unfiltered =
-    !params.get("q") && !params.get("subject") && !listing?.offset;
+    !params.get("q") &&
+    !params.get("subject") &&
+    !params.get("creator") &&
+    !params.get("date_from") &&
+    !params.get("date_to") &&
+    !listing?.offset;
   const featured = unfiltered ? listing?.documents[0] : undefined;
   const branded =
     collection?.name ===
@@ -102,7 +116,7 @@ export default function Catalog({
               </a>
             </h2>
             <p>{featured.metadata.creator || "Creator unknown"}</p>
-            <p>{featured.metadata.date || "Date unknown"}</p>
+            <p>{originalDate(featured)}</p>
             <a className="feature-action" href={`/documents/${featured.id}`}>
               Open document ↗
             </a>
@@ -161,7 +175,56 @@ export default function Catalog({
           </select>
         </label>
         <button type="submit">Search</button>
+        <label>
+          Creator
+          <input
+            name="creator"
+            defaultValue={params.get("creator") || ""}
+            maxLength={200}
+          />
+        </label>
+        <label>
+          Original date from
+          <input
+            type="date"
+            name="date_from"
+            defaultValue={params.get("date_from") || ""}
+          />
+        </label>
+        <label>
+          Original date to
+          <input
+            type="date"
+            name="date_to"
+            defaultValue={params.get("date_to") || ""}
+          />
+        </label>
+        {params.get("language") && (
+          <input
+            type="hidden"
+            name="language"
+            value={params.get("language")!}
+          />
+        )}
       </form>
+      <p>
+        Date bounds match complete original source dates. Partial and unknown
+        dates remain visible without a date bound.
+      </p>
+      <div role="group" aria-label="Catalog layout">
+        <button
+          aria-pressed={layout === "grid"}
+          onClick={() => setLayout("grid")}
+        >
+          Grid
+        </button>
+        <button
+          aria-pressed={layout === "table"}
+          onClick={() => setLayout("table")}
+        >
+          Table
+        </button>
+      </div>
       {listing?.documents.length === 0 && (
         <p className="notice">
           No documents match these filters.{" "}
@@ -170,39 +233,86 @@ export default function Catalog({
           </a>
         </p>
       )}
-      <div className="publication-grid">
-        {listing?.documents.map((doc) => (
-          <article key={doc.id} className="publication">
-            <Cover document={doc} />
-            <div className="publication-caption">
-              <p className="publication-subjects">
-                {doc.metadata.subjects?.join(" / ")}
-              </p>
-              <h2>
-                <a href={`/documents/${doc.id}`}>{doc.metadata.title}</a>
-              </h2>
-              <p>
-                {doc.metadata.creator || "Creator unknown"} ·{" "}
-                {doc.metadata.date || "Date unknown"}
-              </p>
-              <p className="rights-label">
-                Rights: {doc.rights === "unknown" ? "Unknown" : doc.rights} · No
-                reuse license asserted
-              </p>
-              {doc.hits.map((hit, index) => (
-                <p className="search-hit" key={index}>
-                  <a
-                    href={`/documents/${doc.id}?read=1&variant=${hit.variant}${hit.page > 0 ? `&page=${hit.page}` : ""}`}
-                  >
-                    {hit.page > 0 ? `Page ${hit.page}` : "Document text"}
-                  </a>
-                  : {hit.snippet}
-                </p>
+      {layout === "table" ? (
+        <div className="publication-table-wrap">
+          <table>
+            <caption>Document catalog</caption>
+            <thead>
+              <tr>
+                <th scope="col">Document</th>
+                <th scope="col">Original date</th>
+                <th scope="col">Creator</th>
+                <th scope="col">Editions and pages</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {listing?.documents.map((doc) => (
+                <tr key={doc.id}>
+                  <th scope="row">
+                    <a href={`/documents/${doc.id}`}>{doc.metadata.title}</a>
+                  </th>
+                  <td>{originalDate(doc)}</td>
+                  <td>{doc.metadata.creator || "Unknown"}</td>
+                  <td>
+                    {doc.variants
+                      .map(
+                        (v) => `${v.filename} · ${v.pages || "Unknown"} pages`,
+                      )
+                      .join(" / ")}
+                  </td>
+                  <td>
+                    <FavoriteButton
+                      id={doc.id}
+                      title={doc.metadata.title}
+                      favorites={favorites}
+                    />
+                  </td>
+                </tr>
               ))}
-            </div>
-          </article>
-        ))}
-      </div>
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="publication-grid">
+          {listing?.documents.map((doc) => (
+            <article key={doc.id} className="publication">
+              <Cover document={doc} />
+              <div className="publication-caption">
+                <p className="publication-subjects">
+                  {doc.metadata.subjects?.join(" / ")}
+                </p>
+                <h2>
+                  <a href={`/documents/${doc.id}`}>{doc.metadata.title}</a>
+                </h2>
+                <p>
+                  {doc.metadata.creator || "Creator unknown"} ·{" "}
+                  {originalDate(doc)}
+                </p>
+                <FavoriteButton
+                  id={doc.id}
+                  title={doc.metadata.title}
+                  favorites={favorites}
+                />
+                <p className="rights-label">
+                  Rights: {doc.rights === "unknown" ? "Unknown" : doc.rights} ·
+                  No reuse license asserted
+                </p>
+                {doc.hits.map((hit, index) => (
+                  <p className="search-hit" key={index}>
+                    <a
+                      href={`/documents/${doc.id}?read=1&variant=${hit.variant}${hit.page > 0 ? `&page=${hit.page}` : ""}`}
+                    >
+                      {hit.page > 0 ? `Page ${hit.page}` : "Document text"}
+                    </a>
+                    : {hit.snippet}
+                  </p>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
       {listing && (
         <nav className="pagination" aria-label="Catalog pages">
           {listing.offset > 0 && (

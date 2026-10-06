@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@subcult/archive-viewer':
-        specifier: 0.2.2
-        version: 0.2.2(react@19.2.6)
+        specifier: 0.3.1
+        version: 0.3.1(react@19.2.6)
       pdfjs-dist:
         specifier: 5.4.624
         version: 5.4.624
@@ -597,8 +597,8 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@subcult/archive-viewer@0.2.2':
-    resolution: {integrity: sha512-n+9S7ta0lyPKLjvQIEOV/TWKEsM782SNFnwNz8gs/a8itRz4aSmLk1hilHYmV/Q4/suJ0BGss8LiP691aYd4Aw==, tarball: https://git.subcult.tv/api/packages/subculture-collective/npm/%40subcult%2Farchive-viewer/-/0.2.2/archive-viewer-0.2.2.tgz}
+  '@subcult/archive-viewer@0.3.1':
+    resolution: {integrity: sha512-hgkXmkFnD0pfWTmZ9qsSEiuhvRw41PS9N731zoolGzUyorDaF7vjhU2AoPJ73lGEKg8jePAt9Xm2pF1NTFpJ0A==, tarball: https://git.subcult.tv/api/packages/subculture-collective/npm/%40subcult%2Farchive-viewer/-/0.3.1/archive-viewer-0.3.1.tgz}
     peerDependencies:
       react: ^19.2.0
 
@@ -966,6 +966,7 @@ packages:
   eslint@9.39.4:
     resolution: {integrity: sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -1923,7 +1924,7 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@subcult/archive-viewer@0.2.2(react@19.2.6)':
+  '@subcult/archive-viewer@0.3.1(react@19.2.6)':
     dependencies:
       react: 19.2.6
 

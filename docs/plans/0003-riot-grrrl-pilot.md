@@ -69,3 +69,12 @@ PDF downloads match their recorded sizes and hashes; the actual HTTPS reader
 paints pages without an alert. The retained private pilot is unchanged.
 [Public rollout evidence](../reports/riot-grrrl-public-rollout-20261004.md) records
 the large-PDF streaming fix and passed fresh independent public recovery.
+
+## Print viewer follow-up
+
+The viewer feedback issue adds creator/original-date filters before pagination,
+grid/table browsing, collection-scoped local favorites, current document/variant/
+page sharing, and reading focus with Escape. Full source dates support bounds;
+partial and unknown dates remain visible when bounds are absent. Editorial date
+corrections do not replace the original source date. Existing covers, PDF text,
+search, downloads, rights and product-owned layout remain available.
