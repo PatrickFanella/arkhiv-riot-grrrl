@@ -25,4 +25,6 @@ The failed experiment exposed a cleanup defect. Compose teardown left its runnin
 
 The Anarchist full recovery experiment and Riot Grrrl continuation have not yet produced complete restore/reader receipts at this report revision. Neither collection's live configuration, image pointer, timers, backup destination or retention behavior has been changed.
 
-The cleanup follow-up passed `make verify` from each native worktree using its isolated `arkhiv` profile on Sputnik. Both passed 23 operations tests, Go checks, two frontend tests, frozen-lock builds, Compose validation and engine/SDK receipt checks. Hosted CI remains owner-waived.
+The cleanup follow-up passed `make verify` from each native worktree using its isolated `arkhiv` profile on Sputnik. Both passed 24 operations tests, Go checks, two frontend tests, frozen-lock builds, Compose validation and engine/SDK receipt checks. Hosted CI remains owner-waived.
+
+Compose teardown has a 30-second sub-budget inside the 60-second cleanup deadline. A timeout leaves the remaining 30 seconds for exact-label lookup and force removal. The fourth cleanup regression verifies that split, and both full gates passed again.
