@@ -10,6 +10,22 @@ import time
 from runner import Runner, atomic, verify_backup
 
 
+def cleanup(r, compose, project):
+    if not re.fullmatch(r'riot-grrrl-drill-\d{8}t\d{12}z', project):
+        raise ValueError('cleanup requires an exact generated restore project')
+    cleanup_deadline = time.monotonic() + 60
+    r.deadline = cleanup_deadline - 30
+    try:
+        r.execute(compose + ['down', '--volumes', '--remove-orphans'])
+    finally:
+        r.deadline = cleanup_deadline
+        containers = r.execute(['docker', 'ps', '--all', '--quiet', '--no-trunc', '--filter', 'label=com.docker.compose.project=' + project]).split()
+        if any(not re.fullmatch(r'[a-f0-9]{64}', identity) for identity in containers):
+            raise ValueError('unexpected restore container identity')
+        if containers:
+            r.execute(['docker', 'rm', '--force', *containers])
+
+
 def drill(config):
     bounded = dict(config)
     budget = int(config.get("timeout_seconds", 900))
@@ -43,7 +59,7 @@ def drill(config):
     proof.mkdir(mode=0o700)
     services = {
         'db': {'image': 'postgres:17', 'environment': {'POSTGRES_USER': 'arkhiv', 'POSTGRES_PASSWORD': 'disposable-restore-only', 'POSTGRES_DB': 'arkhiv'}, 'tmpfs': ['/var/lib/postgresql/data'], 'healthcheck': {'test': ['CMD', 'pg_isready', '-U', 'arkhiv', '-d', 'arkhiv'], 'interval': '2s', 'timeout': '2s', 'retries': 30}, 'mem_limit': '512m', 'cpus': 0.5},
-        'operator': {'image': image, 'user': '1000:1000', 'entrypoint': ['/app/arkhiv'], 'environment': {'DATABASE_URL': database, 'ARKHIV_ARCHIVE': '/drill/restored'}, 'volumes': [str(incoming) + ':/input:ro', str(work) + ':/drill'], 'mem_limit': '512m', 'cpus': 0.5},
+        'operator': {'image': image, 'init': True, 'user': '1000:1000', 'entrypoint': ['/app/arkhiv'], 'environment': {'DATABASE_URL': database, 'ARKHIV_ARCHIVE': '/drill/restored'}, 'volumes': [str(incoming) + ':/input:ro', str(work) + ':/drill'], 'mem_limit': '512m', 'cpus': 0.5},
         'api': {'image': image, 'environment': {'DATABASE_URL': database, 'ARKHIV_ARCHIVE': '/data/archive'}, 'volumes': [str(work / 'restored') + ':/data/archive:ro'], 'mem_limit': '512m', 'cpus': 0.5},
         'web': {'image': web_image, 'mem_limit': '128m', 'cpus': 0.5},
         'checks': {'image': config['reader_probe_image'], 'volumes': [str(proof) + ':/proof'], 'init': True, 'mem_limit': '2g', 'pids_limit': 256, 'cpus': 1},
@@ -78,8 +94,7 @@ def drill(config):
     finally:
         if started:
             # This exact generated project owns all removed resources; evidence and restored bytes remain.
-            r.deadline = time.monotonic() + 60
-            r.execute(compose + ['down', '--volumes'])
+            cleanup(r, compose, project)
 
 
 if __name__ == '__main__':
