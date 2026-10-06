@@ -80,7 +80,7 @@ with an immutable pin and independently verified upgrades.
 
 ## Viewer feedback, October 6
 
-The product independently pins shared viewer 0.3.1. Its native backend and core
+The product independently pins shared viewer 0.4.0. Its native backend and core
 pins remain independent. Browser favorites are scoped to this product or selected
 collection and retain removable unavailable references. Sharing has a selectable
 copy fallback and social compose links. Optional account activation requires a

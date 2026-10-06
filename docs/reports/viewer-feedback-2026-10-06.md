@@ -17,3 +17,19 @@ A same-origin 390 CSS-pixel iframe in the native browser verified the narrow lay
 The synthetic preview is stopped with its development data retained. This report does not claim public activation, complete retained-corpus qualification, hosted CI, or account-provider activation.
 
 A follow-up at the committed PR head verified an actual missing-cover 404 exposes “Cover unavailable.” An unavailable saved reference remained listed; native Enter on its focused remove control deleted it. Denying browser-storage writes kept the page usable, updated the in-memory favorite state and displayed the temporary-storage notice.
+
+
+## Published follow-up adoption
+
+The consumer now independently pins SDK 0.4.0 and core 0.3.0 from Arkhiv source
+39a49fb45005b001e14218823c22ed19c3de1177. SDK registry bytes were independently
+downloaded and verified against its SHA-256 receipt. The immutable core receipt
+updates the compatibility browse filters and optional media-specific chat storage.
+The native backend and current deployment remain independently owned; this pin
+update does not perform live migration or activate account/chat hosting.
+
+Full `make verify` passed in an isolated T3 snapshot for these exact dependency
+locks and core receipt. The print dump/restore checks used an explicitly
+disposable PostgreSQL 15 service matching the tools image's pg_dump client; the
+earlier PostgreSQL 17 client mismatch was a launcher failure, not a passing test.
+Hosted CI remains owner-waived during the Kvant outage.
