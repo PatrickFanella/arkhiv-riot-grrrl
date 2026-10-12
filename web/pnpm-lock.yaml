@@ -598,7 +598,7 @@ packages:
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
   '@subcult/archive-viewer@0.4.2':
-    resolution: {integrity: sha512-WePyJ2N35OIv72tUuv9xKSMG/r5nvBQLo2lH5z4tvp+dy4jNhFMaKUNAG5pnl3p29Binbaz/FPtEC2uy1D2CKw==, tarball: https://git.subcult.tv/api/packages/subculture-collective/npm/%40subcult%2Farchive-viewer/-/0.4.2/archive-viewer-0.4.2.tgz}
+    resolution: {integrity: sha512-WePyJ2N35OIv72tUuv9xKSMG/r5nvBQLo2lH5z4tvp+dy4jNhFMaKUNAG5pnl3p29Binbaz/FPtEC2uy1D2CKw==, tarball: https://git.subcult.tv/api/packages/subculture-collective/npm/@subcult%2Farchive-viewer/-/0.4.2/archive-viewer-0.4.2.tgz}
     peerDependencies:
       react: ^19.2.0
 

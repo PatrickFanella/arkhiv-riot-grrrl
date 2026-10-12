@@ -2,11 +2,16 @@ name: verify
 
 on:
   push:
+    branches: [main]
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -20,6 +25,16 @@ jobs:
         run: |
           npm install --global --prefix "$RUNNER_TEMP/arkhiv-pnpm" pnpm@10.33.0
           echo "$RUNNER_TEMP/arkhiv-pnpm/bin" >> "$GITHUB_PATH"
+      - name: Install backup test dependency
+        run: |
+          if ! command -v rsync >/dev/null 2>&1; then
+            apt_prefix=()
+            if (( EUID != 0 )); then
+              apt_prefix=(sudo)
+            fi
+            "${apt_prefix[@]}" apt-get update
+            "${apt_prefix[@]}" apt-get install --yes --no-install-recommends rsync
+          fi
       - name: Verify
         run: make verify
       - name: Isolated browser and PostgreSQL 17 smoke
