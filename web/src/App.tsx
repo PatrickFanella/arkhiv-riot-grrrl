@@ -386,6 +386,7 @@ export default function App() {
       <footer>
         <span>Riot Grrrl Archive · Preserved with Arkhiv</span>
         <a href="#about">About, rights and contact</a>
+        <a href="https://subcult.tv/support">Support SUBCULT’s archive software</a>
       </footer>
     </main>
   );
