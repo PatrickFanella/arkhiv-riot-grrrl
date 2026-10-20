@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://riot-grrrl.subcult.tv/sitemap.xml
