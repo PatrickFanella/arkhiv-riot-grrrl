@@ -1,11 +1,11 @@
 {
   "package": "@subcult/archive-viewer",
-  "version": "0.4.2",
-  "source_revision": "1619d86a615bf4bd69c7a601bf585ff5b3a6ef89",
-  "package_file": "subcult-archive-viewer-0.4.2.tgz",
-  "package_sha256": "6eaf356a37bfcde823227f61f0fe42a50385dde4502efdd35eab7ecd675bb04d",
+  "version": "0.4.4",
+  "source_revision": "65d090236f584ba2166b03f7dcfa83ea9911c6d7",
+  "package_file": "subcult-archive-viewer-0.4.4.tgz",
+  "package_sha256": "6a39e478117a419dc9258b2e82c635a4b7b4ced68acd63996fd8b2ab1f10f241",
   "license": "GPL-3.0-only",
-  "scope": "Frontend SDK patch; no engine or core image release",
+  "scope": "Frontend SDK patch; core artifacts are versioned independently",
   "compatible_core_receipt": "core-release-0.3.0.json",
   "registry": "https://git.subcult.tv/api/packages/subculture-collective/npm/"
 }
