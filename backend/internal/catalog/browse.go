@@ -3,12 +3,13 @@ package catalog
 import (
 	"fmt"
 	"time"
+	"unicode/utf8"
 )
 
 type BrowseFilters struct{ Creator, DateFrom, DateTo string }
 
 func (f BrowseFilters) Validate() error {
-	if len(f.Creator) > 200 {
+	if utf8.RuneCountInString(f.Creator) > 200 {
 		return fmt.Errorf("creator exceeds 200 characters")
 	}
 	for _, value := range []string{f.DateFrom, f.DateTo} {

@@ -188,7 +188,7 @@ class Runner:
         self.state = Path(config['state'])
         self.state.mkdir(parents=True, exist_ok=True, mode=0o700)
         self.execute = execute or self.command
-        self.deadline = time.monotonic() + min(int(config.get('timeout_seconds', 900)), 3600)
+        self.deadline = time.monotonic() + max(1, min(int(config.get('timeout_seconds', 900)), 14400))
 
     def command(self, args):
         remaining = self.deadline - time.monotonic()

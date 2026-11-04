@@ -82,7 +82,11 @@ export default function Catalog({
           {branded ? (
             <>
               {riot ? (
-                <span className="cutletters" aria-label="Riot Grrrl">
+                <span
+                  className="cutletters"
+                  role="img"
+                  aria-label="Riot Grrrl"
+                >
                   <span aria-hidden="true">
                     {"RIOT GRRRL".split("").map((letter, index) =>
                       letter === " " ? (
@@ -150,7 +154,7 @@ export default function Catalog({
             : "The collection"}
         </h2>
         <p role="status">
-          {listing?.total || 0} documents
+          {listing?.total || 0} {listing?.total === 1 ? "document" : "documents"}
           {params.get("q") ? ` matching “${params.get("q")}”` : ""}
         </p>
       </div>

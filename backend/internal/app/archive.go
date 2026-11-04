@@ -4,10 +4,12 @@ import (
 	"encoding/json"
 	"mime"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"unicode/utf8"
 
 	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/catalog"
 	"git.subcult.tv/subculture-collective/arkhiv-riot-grrrl/internal/index"
@@ -50,7 +52,7 @@ func ArchiveHandler(db *catalog.DB, store *storage.Store) http.Handler {
 				return
 			}
 		}
-		if limit < 1 || limit > 50 || offset < 0 || offset > 100000 || len(q.Get("q")) > 200 || len(q.Get("subject")) > 100 || len(q.Get("language")) > 50 {
+		if limit < 1 || limit > 50 || offset < 0 || offset > 100000 || !textWithinBounds(q) {
 			fail(w, 400, "query exceeds bounds")
 			return
 		}
@@ -139,7 +141,7 @@ func ArchiveHandler(db *catalog.DB, store *storage.Store) http.Handler {
 	}
 	mux.HandleFunc("GET /api/assets/{id}/search", func(w http.ResponseWriter, r *http.Request) {
 		q := r.URL.Query().Get("q")
-		if len(q) > 200 || strings.TrimSpace(q) == "" {
+		if utf8.RuneCountInString(q) > 200 || strings.TrimSpace(q) == "" {
 			fail(w, 400, "search query required within bounds")
 			return
 		}
@@ -172,6 +174,12 @@ func ArchiveHandler(db *catalog.DB, store *storage.Store) http.Handler {
 	mux.HandleFunc("GET /api/assets/{id}", assets)
 	mux.HandleFunc("GET /api/assets/{id}/cover", assets)
 	return mux
+}
+
+// textWithinBounds limits text filters by characters rather than bytes so the
+// catalog form's 200-character inputs and facet subjects pass in any script.
+func textWithinBounds(q url.Values) bool {
+	return utf8.RuneCountInString(q.Get("q")) <= 200 && utf8.RuneCountInString(q.Get("subject")) <= 200 && len(q.Get("language")) <= 50
 }
 func respond(w http.ResponseWriter, v any) {
 	w.Header().Set("Content-Type", "application/json")
