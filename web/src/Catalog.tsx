@@ -154,7 +154,7 @@ export default function Catalog({
             : "The collection"}
         </h2>
         <p role="status">
-          {listing?.total || 0} documents
+          {listing?.total || 0} {listing?.total === 1 ? "document" : "documents"}
           {params.get("q") ? ` matching “${params.get("q")}”` : ""}
         </p>
       </div>
