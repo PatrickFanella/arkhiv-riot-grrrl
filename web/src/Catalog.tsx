@@ -82,7 +82,11 @@ export default function Catalog({
           {branded ? (
             <>
               {riot ? (
-                <span className="cutletters" aria-label="Riot Grrrl">
+                <span
+                  className="cutletters"
+                  role="img"
+                  aria-label="Riot Grrrl"
+                >
                   <span aria-hidden="true">
                     {"RIOT GRRRL".split("").map((letter, index) =>
                       letter === " " ? (

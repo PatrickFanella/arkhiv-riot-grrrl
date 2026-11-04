@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
+	"strings"
 	"testing"
 )
 
@@ -34,6 +36,24 @@ func TestRouteBoundaries(t *testing.T) {
 		Handler().ServeHTTP(r, httptest.NewRequest(tc.method, tc.path, nil))
 		if r.Code != tc.status {
 			t.Errorf("%s %s: got %d, want %d", tc.method, tc.path, r.Code, tc.status)
+		}
+	}
+}
+
+func TestTextBoundsCountCharacters(t *testing.T) {
+	long := strings.Repeat("ж", 200)
+	for _, tc := range []struct {
+		name   string
+		values url.Values
+		within bool
+	}{
+		{"200-character query", url.Values{"q": {long}}, true},
+		{"200-character subject", url.Values{"subject": {long}}, true},
+		{"201-character query", url.Values{"q": {long + "ж"}}, false},
+		{"201-character subject", url.Values{"subject": {long + "ж"}}, false},
+	} {
+		if textWithinBounds(tc.values) != tc.within {
+			t.Errorf("%s: within bounds = %v, want %v", tc.name, !tc.within, tc.within)
 		}
 	}
 }

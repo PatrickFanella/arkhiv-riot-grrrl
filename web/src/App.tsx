@@ -62,6 +62,8 @@ async function json<T>(url: string, signal: AbortSignal): Promise<T> {
 export const originalDate = (doc: DocumentRecord) =>
   (doc.original_date === undefined ? doc.metadata.date : doc.original_date) ||
   "Date unknown";
+export const selectVariant = (variants: Variant[], requested: string | null) =>
+  requested ? variants.find((v) => v.id === requested) : variants[0];
 const favoriteDocument = async (
   id: string,
   signal: AbortSignal,
@@ -160,9 +162,8 @@ export default function App() {
     };
   }, [id]);
   const collection = collections.find((c) => c.id === collectionID);
-  const variant =
-    doc?.variants.find((v) => v.id === params.get("variant")) ||
-    doc?.variants[0];
+  const requestedVariant = params.get("variant");
+  const variant = doc && selectVariant(doc.variants, requestedVariant);
   useEffect(() => {
     document.title = `${doc?.metadata.title || collection?.name || "Riot Grrrl zines"} · Riot Grrrl Archive`;
     let canonical = document.querySelector<HTMLLinkElement>(
@@ -288,6 +289,16 @@ export default function App() {
                   .
                 </p>
               </aside>
+              {requestedVariant && !variant && (
+                <p role="alert" className="notice">
+                  This edition is unavailable.{" "}
+                  <a
+                    href={`/?collection=${encodeURIComponent(doc.collection)}`}
+                  >
+                    Back to the catalog
+                  </a>
+                </p>
+              )}
               <div className="variants">
                 {doc.variants.map((v) => (
                   <article key={v.id}>
