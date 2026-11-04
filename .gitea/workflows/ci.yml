@@ -39,3 +39,30 @@ jobs:
         run: make verify
       - name: Isolated browser and PostgreSQL 17 smoke
         run: make test-browser
+
+  image:
+    needs: verify
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and publish the deployable images for this revision
+        env:
+          REGISTRY_PAT: ${{ secrets.REGISTRY_PAT }}
+          REGISTRY: git.subcult.tv/subculture-collective
+        run: |
+          set -euo pipefail
+          test -n "$REGISTRY_PAT"
+          auth_dir=$(mktemp -d)
+          trap 'rm -rf "$auth_dir"' EXIT
+          chmod 700 "$auth_dir"
+          export DOCKER_BUILDKIT=1 DOCKER_CONFIG="$auth_dir/docker"
+          docker build -f web/Dockerfile --label "org.opencontainers.image.revision=$GITHUB_SHA" -t "$REGISTRY/arkhiv-riot-grrrl-web:$GITHUB_SHA" web
+          docker build -f backend/Dockerfile --label "org.opencontainers.image.revision=$GITHUB_SHA" -t "$REGISTRY/arkhiv-riot-grrrl-api:$GITHUB_SHA" .
+          IMAGES="$REGISTRY/arkhiv-riot-grrrl-web:$GITHUB_SHA $REGISTRY/arkhiv-riot-grrrl-api:$GITHUB_SHA"
+          printf '%s' "$REGISTRY_PAT" | docker login git.subcult.tv --username subcult-agent --password-stdin
+          for image in $IMAGES; do
+            docker push "$image"
+            echo "published $(docker inspect --format '{{index .RepoDigests 0}}' "$image")"
+          done
