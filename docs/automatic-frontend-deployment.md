@@ -32,3 +32,8 @@ using Docker DNS to reach the existing collection-specific API. The default
 `api:8080` remains suitable for the isolated local stack. On Almaz the receiver
 uses a locally reviewed frontend-only Compose baseline and its registered runtime
 guard, so it can deploy without reading sibling services’ private env files.
+
+Before building on main, CI queries the receiver for an already accepted image
+for that exact commit. A retry reuses that immutable image and its public HTML
+hash, skipping image rebuild/publication. PRs still build and run the nginx
+configuration check; the existing verification gate also remains on every run.
