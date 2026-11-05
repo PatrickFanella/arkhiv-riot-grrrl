@@ -1,0 +1,26 @@
+{
+  "slug": "arkhiv-riot-grrrl",
+  "origin": "https://riot-grrrl.subcult.tv",
+  "tags": [
+    "<link rel=\"icon\" href=\"/brand/arkhiv-riot-grrrl/favicon.ico\" sizes=\"16x16 32x32 48x48\">",
+    "<link rel=\"icon\" href=\"/brand/arkhiv-riot-grrrl/favicon.svg\" type=\"image/svg+xml\">",
+    "<link rel=\"apple-touch-icon\" href=\"/brand/arkhiv-riot-grrrl/apple-touch-icon.png\">",
+    "<meta property=\"og:type\" content=\"website\">",
+    "<meta property=\"og:site_name\" content=\"Riot Grrrl Zine Archive\">",
+    "<meta property=\"og:title\" content=\"Riot Grrrl Zine Archive\">",
+    "<meta property=\"og:description\" content=\"A catalog and reader for preserved Riot Grrrl zines, with source and rights notes retained.\">",
+    "<meta property=\"og:image\" content=\"https://riot-grrrl.subcult.tv/brand/arkhiv-riot-grrrl/og.png\">",
+    "<meta property=\"og:image:width\" content=\"1200\">",
+    "<meta property=\"og:image:height\" content=\"630\">",
+    "<meta property=\"og:image:alt\" content=\"Riot Grrrl Zine Archive \u2014 A catalog and reader for preserved Riot Grrrl zines, with source and rights notes retained.\">",
+    "<meta name=\"twitter:card\" content=\"summary_large_image\">",
+    "<meta name=\"twitter:title\" content=\"Riot Grrrl Zine Archive\">",
+    "<meta name=\"twitter:description\" content=\"A catalog and reader for preserved Riot Grrrl zines, with source and rights notes retained.\">",
+    "<meta name=\"twitter:image\" content=\"https://riot-grrrl.subcult.tv/brand/arkhiv-riot-grrrl/og.png\">",
+    "<meta name=\"twitter:image:alt\" content=\"Riot Grrrl Zine Archive \u2014 A catalog and reader for preserved Riot Grrrl zines, with source and rights notes retained.\">",
+    "<link rel=\"canonical\" href=\"https://riot-grrrl.subcult.tv/\">",
+    "<meta property=\"og:url\" content=\"https://riot-grrrl.subcult.tv/\">"
+  ],
+  "credit": "<footer class=\"subcult-identity\" aria-label=\"Software identity\"><img src=\"/brand/arkhiv-riot-grrrl/mark.svg\" width=\"32\" height=\"32\" alt=\"\"><span>Riot Grrrl Zine Archive <span aria-hidden=\"true\">\u00b7</span> <a href=\"https://subcult.tv\">A SUBCULT project</a></span></footer>",
+  "css": ".subcult-identity{box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:0;padding:16px 24px;background:#f5edea;color:#23191e;font:14px/1.5 system-ui,sans-serif;text-align:center}.subcult-identity img{display:block;flex:none}.subcult-identity a{color:inherit;display:inline-flex;align-items:center;min-height:44px;text-underline-offset:3px}.subcult-identity a:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
+}
