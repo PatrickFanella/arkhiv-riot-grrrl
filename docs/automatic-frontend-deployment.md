@@ -26,3 +26,9 @@ original source metadata and engine release procedures retain their own
 controls. This pipeline updates the frontend of the already public app; it does
 not acquire content or publish additional material. Browser playback/reading,
 audiovisual review, independent restore and deployment remain separate evidence.
+
+The public image sets `CORE_UPSTREAM` to `riot-public-api:8080` at build time,
+using Docker DNS to reach the existing collection-specific API. The default
+`api:8080` remains suitable for the isolated local stack. On Almaz the receiver
+uses a locally reviewed frontend-only Compose baseline and its registered runtime
+guard, so it can deploy without reading sibling services’ private env files.
