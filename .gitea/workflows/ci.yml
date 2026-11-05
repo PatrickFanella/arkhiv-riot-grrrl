@@ -104,7 +104,7 @@ jobs:
           printf '%s\n' "$DEPLOY_KEY" > "$deploy_dir/key"
           printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$deploy_dir/known_hosts"
           unset DEPLOY_KEY DEPLOY_KNOWN_HOSTS
-          ssh_args=(-i "$deploy_dir/key" -o ControlPath=none -o ControlMaster=no -o BatchMode=yes -o IdentitiesOnly=yes
+          ssh_args=(-F /dev/null -i "$deploy_dir/key" -o ControlPath=none -o ControlMaster=no -o BatchMode=yes -o IdentitiesOnly=yes
             -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$deploy_dir/known_hosts"
             -o ConnectTimeout=15 onnwee@10.0.0.200)
           ssh "${ssh_args[@]}" status
