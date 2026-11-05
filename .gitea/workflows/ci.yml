@@ -62,9 +62,10 @@ jobs:
           auth_dir=$(mktemp -d)
           trap 'rm -rf "$auth_dir"' EXIT
           export DOCKER_BUILDKIT=1
-          docker build -f web/Dockerfile --build-arg VITE_PUBLIC_URL=https://riot-grrrl.subcult.tv --label "org.opencontainers.image.revision=$GITHUB_SHA" --label "org.opencontainers.image.source=https://git.subcult.tv/subculture-collective/arkhiv-riot-grrrl" -t "$REGISTRY/arkhiv-riot-grrrl-web:$GITHUB_SHA" web
+          docker build -f web/Dockerfile --build-arg CORE_UPSTREAM=riot-public-api:8080 --build-arg VITE_PUBLIC_URL=https://riot-grrrl.subcult.tv --label "org.opencontainers.image.revision=$GITHUB_SHA" --label "org.opencontainers.image.source=https://git.subcult.tv/subculture-collective/arkhiv-riot-grrrl" -t "$REGISTRY/arkhiv-riot-grrrl-web:$GITHUB_SHA" web
           docker build -f backend/Dockerfile --label "org.opencontainers.image.revision=$GITHUB_SHA" --label "org.opencontainers.image.source=https://git.subcult.tv/subculture-collective/arkhiv-riot-grrrl" -t "$REGISTRY/arkhiv-riot-grrrl-api:$GITHUB_SHA" .
           docker tag "$REGISTRY/arkhiv-riot-grrrl-web:$GITHUB_SHA" "fleet-deploy/arkhiv-riot-grrrl/riot-public-web:$DEPLOY_REVISION"
+          docker run --rm --network none --entrypoint nginx "$REGISTRY/arkhiv-riot-grrrl-web:$GITHUB_SHA" -t
       - name: Publish verified main images
         if: github.server_url == 'https://git.subcult.tv' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         shell: bash
