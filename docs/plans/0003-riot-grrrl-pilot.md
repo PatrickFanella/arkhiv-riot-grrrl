@@ -82,3 +82,11 @@ search, downloads, rights and product-owned layout remain available.
 ## Bounded backup follow-up
 
 The opt-in [bounded backup mode](../runbooks/bounded-backups.md) retains complete snapshots and shares verified read-only files between backups. Explicit snapshot/staging/independent-store caps refuse unsafe growth without pruning evidence. Source qualification and live capacity/restore requirements are tracked in Anarchist Archive #56; live jobs retain their existing behavior until reviewed activation.
+
+## CI frontend deployment follow-up, November 5
+
+The already public frontend gains automatic deployment after the existing full
+verification and isolated browser/PostgreSQL gate. PRs also build the deployable
+image without deployment credentials. The [frontend deployment procedure](../automatic-frontend-deployment.md) records the scoped key, live verification and
+rollback. Core pins, collection review, acquisition, database and preservation
+operations retain their separate procedures.

@@ -98,3 +98,8 @@ The opt-in [bounded backup mode](docs/runbooks/bounded-backups.md) retains compl
 ## Brand assets
 
 The product identity and selected public exports are recorded in [the brand handoff](docs/brand/arkhiv-riot-grrrl/GUIDE.md) and [source hashes](docs/brand/arkhiv-riot-grrrl/export.json). Regenerate from SUBCULT Studio with `python3 studio/scripts/export_remaining_brand.py arkhiv-riot-grrrl /path/to/this/repository`; use `--check` to verify the export without writing.
+
+## Automatic public frontend deployment
+
+The existing verification gate now builds frontend images on PRs and deploys
+verified main builds to the live Almaz frontend. See the [CI deployment and rollback procedure](docs/automatic-frontend-deployment.md).
