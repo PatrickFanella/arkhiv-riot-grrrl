@@ -1,5 +1,7 @@
 # Riot Grrrl Zine Archive
 
+![Riot Grrrl Zine Archive identity](docs/brand/arkhiv-riot-grrrl/readme-lockup.png)
+
 A separate Arkhiv application for preserving, cataloging and reading Riot Grrrl zines.
 The collection preserves 23 issues across **Girl Germs, VOOP, Drop Babies, Violet,
 No Apologies, Personality Liberation Front** and other Riot Grrrl zines. The catalog
@@ -92,3 +94,7 @@ The [viewer qualification report](docs/reports/viewer-feedback-2026-10-06.md) re
 ## Bounded backup follow-up
 
 The opt-in [bounded backup mode](docs/runbooks/bounded-backups.md) retains complete snapshots and shares verified read-only files between backups. Explicit snapshot/staging/independent-store caps refuse unsafe growth without pruning evidence. Source qualification and live capacity/restore requirements are tracked in Anarchist Archive #56; live jobs retain their existing behavior until reviewed activation.
+
+## Brand assets
+
+The product identity and selected public exports are recorded in [the brand handoff](docs/brand/arkhiv-riot-grrrl/GUIDE.md) and [source hashes](docs/brand/arkhiv-riot-grrrl/export.json). Regenerate from SUBCULT Studio with `python3 studio/scripts/export_remaining_brand.py arkhiv-riot-grrrl /path/to/this/repository`; use `--check` to verify the export without writing.

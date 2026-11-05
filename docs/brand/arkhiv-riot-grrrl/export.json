@@ -1,0 +1,79 @@
+{
+  "studio_repository": "subculture-collective/subcult-tv",
+  "studio_revision": "6907e56c181949c1d99064dbc38ae9fe660a66d0",
+  "brand": "arkhiv-riot-grrrl",
+  "files": [
+    {
+      "source": "studio/brands/arkhiv-riot-grrrl/GUIDE.md",
+      "target": "docs/brand/arkhiv-riot-grrrl/GUIDE.md",
+      "sha256": "d1986d3625568cebe1bd1ac74c5445f8ddce9d0ae77f25b38b1ff5a37c201440",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/arkhiv-riot-grrrl/product/readme-lockup.png",
+      "target": "docs/brand/arkhiv-riot-grrrl/readme-lockup.png",
+      "sha256": "a5afa8ba38728f5ae91d7a6ffe07d97518a54190e14cb4c8eeb1fadc4f9f95f4",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/arkhiv-riot-grrrl/social/avatar.png",
+      "target": "docs/brand/arkhiv-riot-grrrl/avatar.png",
+      "sha256": "2115d06759b9fac80071d3d2b254dcd134ceac26b90f16b797a4549b2aa9d1a2",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/arkhiv-riot-grrrl/product/favicon.svg",
+      "target": "web/public/brand/arkhiv-riot-grrrl/favicon.svg",
+      "sha256": "596af444d43b6ab97b577646503b2432bce3ea678c32024f429703c50de37476",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/arkhiv-riot-grrrl/product/favicon.ico",
+      "target": "web/public/brand/arkhiv-riot-grrrl/favicon.ico",
+      "sha256": "31b874d6bd69fccf6468f309b841271256f8b723310be057986be32ade6a08fe",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/arkhiv-riot-grrrl/product/apple-touch-icon.png",
+      "target": "web/public/brand/arkhiv-riot-grrrl/apple-touch-icon.png",
+      "sha256": "b897250fe90f9079efb9dff9c759e381cdce66610daaf5e7e42c90106c9501a5",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/arkhiv-riot-grrrl/product/og.png",
+      "target": "web/public/brand/arkhiv-riot-grrrl/og.png",
+      "sha256": "d5f37190b93ed653a3a0ca879a165b7a96fde93045ed5142d960d99554e546c9",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/arkhiv-riot-grrrl/product/mark.svg",
+      "target": "web/public/brand/arkhiv-riot-grrrl/mark.svg",
+      "sha256": "c795dff4d7661bdb8b83bca71416ea10ab44df7aceb96c1ed273199044e249c5",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/arkhiv-riot-grrrl/product/favicon.svg",
+      "target": "web/public/favicon.svg",
+      "sha256": "596af444d43b6ab97b577646503b2432bce3ea678c32024f429703c50de37476",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/arkhiv-riot-grrrl/product/favicon.ico",
+      "target": "web/public/favicon.ico",
+      "sha256": "31b874d6bd69fccf6468f309b841271256f8b723310be057986be32ade6a08fe",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/arkhiv-riot-grrrl/product/apple-touch-icon.png",
+      "target": "web/public/apple-touch-icon.png",
+      "sha256": "b897250fe90f9079efb9dff9c759e381cdce66610daaf5e7e42c90106c9501a5",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/arkhiv-riot-grrrl/product/og.png",
+      "target": "web/public/og.png",
+      "sha256": "d5f37190b93ed653a3a0ca879a165b7a96fde93045ed5142d960d99554e546c9",
+      "transformation": "unchanged copy"
+    }
+  ]
+}
