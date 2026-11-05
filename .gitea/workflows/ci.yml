@@ -3,6 +3,7 @@ name: verify
 on:
   push:
     branches: [main]
+  workflow_dispatch:
   pull_request:
 
 permissions:
@@ -41,28 +42,80 @@ jobs:
         run: make test-browser
 
   image:
+    name: Build images and deploy frontend
     needs: verify
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    env:
+      REGISTRY: git.subcult.tv/subculture-collective
+      DEPLOY_REVISION: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
-      - name: Build and publish the deployable images for this revision
+        with:
+          ref: ${{ github.sha }}
+      - name: Build deployable images from the verified revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$DEPLOY_REVISION"
+          umask 077
+          auth_dir=$(mktemp -d)
+          trap 'rm -rf "$auth_dir"' EXIT
+          export DOCKER_BUILDKIT=1
+          docker build -f web/Dockerfile --build-arg VITE_PUBLIC_URL=https://riot-grrrl.subcult.tv --label "org.opencontainers.image.revision=$GITHUB_SHA" --label "org.opencontainers.image.source=https://git.subcult.tv/subculture-collective/arkhiv-riot-grrrl" -t "$REGISTRY/arkhiv-riot-grrrl-web:$GITHUB_SHA" web
+          docker build -f backend/Dockerfile --label "org.opencontainers.image.revision=$GITHUB_SHA" --label "org.opencontainers.image.source=https://git.subcult.tv/subculture-collective/arkhiv-riot-grrrl" -t "$REGISTRY/arkhiv-riot-grrrl-api:$GITHUB_SHA" .
+          docker tag "$REGISTRY/arkhiv-riot-grrrl-web:$GITHUB_SHA" "fleet-deploy/arkhiv-riot-grrrl/riot-public-web:$DEPLOY_REVISION"
+      - name: Publish verified main images
+        if: github.server_url == 'https://git.subcult.tv' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        shell: bash
         env:
           REGISTRY_PAT: ${{ secrets.REGISTRY_PAT }}
-          REGISTRY: git.subcult.tv/subculture-collective
         run: |
           set -euo pipefail
           test -n "$REGISTRY_PAT"
+          umask 077
           auth_dir=$(mktemp -d)
           trap 'rm -rf "$auth_dir"' EXIT
-          chmod 700 "$auth_dir"
-          export DOCKER_BUILDKIT=1 DOCKER_CONFIG="$auth_dir/docker"
-          docker build -f web/Dockerfile --label "org.opencontainers.image.revision=$GITHUB_SHA" -t "$REGISTRY/arkhiv-riot-grrrl-web:$GITHUB_SHA" web
-          docker build -f backend/Dockerfile --label "org.opencontainers.image.revision=$GITHUB_SHA" -t "$REGISTRY/arkhiv-riot-grrrl-api:$GITHUB_SHA" .
+          export DOCKER_CONFIG="$auth_dir/docker"
           IMAGES="$REGISTRY/arkhiv-riot-grrrl-web:$GITHUB_SHA $REGISTRY/arkhiv-riot-grrrl-api:$GITHUB_SHA"
           printf '%s' "$REGISTRY_PAT" | docker login git.subcult.tv --username subcult-agent --password-stdin
           for image in $IMAGES; do
             docker push "$image"
             echo "published $(docker inspect --format '{{index .RepoDigests 0}}' "$image")"
           done
+      - name: Deploy the built image and verify public HTML
+        if: >-
+          github.server_url == 'https://git.subcult.tv' &&
+          github.ref == 'refs/heads/main' &&
+          (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        shell: bash
+        env:
+          DEPLOY_KEY: ${{ secrets.HOMELAB_DEPLOY_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.HOMELAB_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$DEPLOY_REVISION"
+          test -n "$DEPLOY_KEY"
+          test -n "$DEPLOY_KNOWN_HOSTS"
+          umask 077
+          deploy_dir=$(mktemp -d)
+          trap 'rm -rf "$deploy_dir"' EXIT
+          printf '%s\n' "$DEPLOY_KEY" > "$deploy_dir/key"
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$deploy_dir/known_hosts"
+          unset DEPLOY_KEY DEPLOY_KNOWN_HOSTS
+          ssh_args=(-i "$deploy_dir/key" -o BatchMode=yes -o IdentitiesOnly=yes
+            -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$deploy_dir/known_hosts"
+            -o ConnectTimeout=15 onnwee@10.0.0.200)
+          ssh "${ssh_args[@]}" status
+          image="fleet-deploy/arkhiv-riot-grrrl/riot-public-web:$DEPLOY_REVISION"
+          # The forced receiver accepts a full hexadecimal revision; expand it here.
+          # shellcheck disable=SC2029
+          docker save "$image" | ssh "${ssh_args[@]}" "receive $DEPLOY_REVISION riot-public-web"
+          # shellcheck disable=SC2029
+          ssh "${ssh_args[@]}" "deploy $DEPLOY_REVISION"
+          expected=$(docker run --rm --entrypoint /bin/cat "$image" /usr/share/nginx/html/index.html | sha256sum | cut -d' ' -f1)
+          curl --fail --silent --show-error --retry 4 --retry-all-errors \
+            --max-time 30 https://riot-grrrl.subcult.tv/ > "$deploy_dir/live.html"
+          actual=$(sha256sum "$deploy_dir/live.html" | cut -d' ' -f1)
+          test "$actual" = "$expected"
+          printf 'Live HTML matches the image built from %s\n' "$DEPLOY_REVISION"
